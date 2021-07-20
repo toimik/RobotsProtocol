@@ -44,28 +44,6 @@ PM> Install-Package Toimik.RobotsProtocol -Version 0.1.1
 <PackageReference Include="Toimik.RobotsProtocol" Version="0.1.1" />
 ```
 
-#### Scripts & Interactive
-
-```command
-> #r "nuget: Toimik.RobotsProtocol, 0.1.1"
-```
-
-#### Paket CLI
-
-```command
-> paket add Toimik.RobotsProtocol --version 0.1.1
-```
-
-#### Cake
-
-```command
-// Install Toimik.RobotsProtocol as a Cake Addin
-#addin nuget:?package=Toimik.RobotsProtocol&version=0.1.1
-
-// Install Toimik.RobotsProtocol as a Cake Tool
-#tool nuget:?package=Toimik.RobotsProtocol&version=0.1.1
-```
-
 ### Usage
 
 Snippets are shown below. 
