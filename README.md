@@ -29,41 +29,41 @@ Parsers for [Robots Exclusion Standard](https://en.wikipedia.org/wiki/Robots_exc
 #### Package Manager
 
 ```command
-PM> Install-Package Toimik.RobotsProtocol -Version 0.1.0
+PM> Install-Package Toimik.RobotsProtocol -Version 0.1.1
 ```
 
 #### .NET CLI
 
 ```command
-> dotnet add package Toimik.RobotsProtocol --version 0.1.0
+> dotnet add package Toimik.RobotsProtocol --version 0.1.1
 ```
 
 #### PackageReference
 
 ```command
-<PackageReference Include="Toimik.RobotsProtocol" Version="0.1.0" />
+<PackageReference Include="Toimik.RobotsProtocol" Version="0.1.1" />
 ```
 
 #### Scripts & Interactive
 
 ```command
-> #r "nuget: Toimik.RobotsProtocol, 0.1.0"
+> #r "nuget: Toimik.RobotsProtocol, 0.1.1"
 ```
 
 #### Paket CLI
 
 ```command
-> paket add Toimik.RobotsProtocol --version 0.1.0
+> paket add Toimik.RobotsProtocol --version 0.1.1
 ```
 
 #### Cake
 
 ```command
 // Install Toimik.RobotsProtocol as a Cake Addin
-#addin nuget:?package=Toimik.RobotsProtocol&version=0.1.0
+#addin nuget:?package=Toimik.RobotsProtocol&version=0.1.1
 
 // Install Toimik.RobotsProtocol as a Cake Tool
-#tool nuget:?package=Toimik.RobotsProtocol&version=0.1.0
+#tool nuget:?package=Toimik.RobotsProtocol&version=0.1.1
 ```
 
 ### Usage
