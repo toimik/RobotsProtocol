@@ -23,9 +23,7 @@ namespace Toimik.RobotsProtocol
     /// Represents the counterpart of a /robots.txt but for page-level settings.
     /// </summary>
     /// <remarks>
-    /// Use this to query the loaded values of Robots Meta Tag (
-    /// <see cref="Load(IDictionary{string, string})"/> ) and X-Robots-Tag HTTP header (
-    /// <see cref="Load(IEnumerable{string})"/> ).
+    /// Use this to query the loaded values of Robots Meta Tags and X-Robots-Tag HTTP headers.
     /// <para>
     /// Unlike /robots.txt, there is no standard directives to adhere to. As such, no convenience
     /// methods are provided for direct access to the respective values.
