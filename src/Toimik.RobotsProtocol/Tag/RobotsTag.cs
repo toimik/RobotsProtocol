@@ -130,6 +130,7 @@ namespace Toimik.RobotsProtocol
         /// </remarks>
         public IList<Error<TagErrorCode>> Load(IList<string> data, ISet<string> specialWords = null)
         {
+            userAgentToDirectiveToTags.Clear();
             var errors = new List<Error<TagErrorCode>>();
             if (specialWords == null)
             {

@@ -256,6 +256,10 @@ namespace Toimik.RobotsProtocol
             ISet<string> customFields = null,
             IDictionary<string, string> misspelledFields = null)
         {
+            customFieldToValues.Clear();
+            sitemaps.Clear();
+            userAgentToRuleGroup.Clear();
+
             using var reader = new StreamReader(stream, leaveOpen: true);
 
             // This is done outside of the loop below so that the line numbering starts from the
