@@ -136,6 +136,27 @@
         }
 
         [Fact]
+        public void LoadStartsAfresh()
+        {
+            var robotsTag = new RobotsTag();
+            const string UserAgent1 = "bot";
+            var data = new List<string>()
+            {
+                $"{UserAgent1}: all",
+            };
+            robotsTag.Load(data);
+            const string UserAgent2 = "otherbot";
+            data = new List<string>()
+            {
+                $"{UserAgent2}: none",
+            };
+            robotsTag.Load(data);
+
+            Assert.Equal(0, robotsTag.GetTagCount(UserAgent1));
+            Assert.Equal(1, robotsTag.GetTagCount(UserAgent2));
+        }
+
+        [Fact]
         public void SpacesDoNotMatter()
         {
             var robotsTag = new RobotsTag();

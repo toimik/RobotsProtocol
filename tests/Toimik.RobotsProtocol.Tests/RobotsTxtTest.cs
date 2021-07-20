@@ -214,6 +214,49 @@
         }
 
         [Fact]
+        public async Task LoadStartsAfresh()
+        {
+            var robotsTxt = new RobotsTxt();
+            const string UserAgent1 = "bot";
+            const string CustomField = "host";
+            var data = @$"
+                user-agent: {UserAgent1}
+                allow: /
+                crawl-delay: 2
+
+                sitemap: http://www.example.com/sitemap.xml.gz
+
+                {CustomField}: example.com";
+            var customFields = new HashSet<string>
+            {
+                CustomField
+            };
+            await robotsTxt.Load(data, customFields: customFields);
+            const string UserAgent2 = "otherbot";
+            data = @$"
+                user-agent: {UserAgent2}
+                disallow: /
+                crawl-delay: 1
+
+                sitemap: http://www.example.com/sitemap.xml
+
+                {CustomField}: www.example.com";
+            await robotsTxt.Load(data, customFields: customFields);
+
+            Assert.Equal(1, robotsTxt.SitemapCount);
+            Assert.Equal(1, robotsTxt.GetCustomCount(CustomField));
+
+            Assert.Null(robotsTxt.GetCrawlDelay(UserAgent1));
+            Assert.Null(robotsTxt.GetRuleGroup(UserAgent1));
+
+            Assert.Equal(1, robotsTxt.GetCrawlDelay(UserAgent2));
+            var ruleGroup = robotsTxt.GetRuleGroup(UserAgent2);
+            var directives = ruleGroup.Directives;
+            Assert.True(directives.MoveNext());
+            Assert.False(directives.MoveNext());
+        }
+
+        [Fact]
         public async Task MatchByImplicitAllow()
         {
             var robotsTxt = new RobotsTxt();
