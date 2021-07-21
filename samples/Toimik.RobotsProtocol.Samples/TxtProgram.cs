@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    class TxtProgram
+    public class TxtProgram
     {
         public static void Main()
         {

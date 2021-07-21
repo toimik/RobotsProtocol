@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    class TagProgram
+    public class TagProgram
     {
         public static void Main()
         {
