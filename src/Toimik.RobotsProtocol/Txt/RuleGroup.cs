@@ -45,7 +45,7 @@ namespace Toimik.RobotsProtocol
         public override string ToString()
         {
             var builder = new StringBuilder($"User-agent: {UserAgent}")
-                .AppendLine(); ;
+                .AppendLine();
             foreach (Directive directive in directives)
             {
                 builder.Append(directive);
