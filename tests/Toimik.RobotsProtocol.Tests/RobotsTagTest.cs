@@ -35,7 +35,7 @@
             var data = new List<string>()
             {
                 "all",
-                Datum
+                Datum,
             };
             var errors = robotsTag.Load(data);
             var error = Utils.GetOnlyItem(errors.GetEnumerator());
@@ -83,7 +83,7 @@
             var specialWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
                 "max-snippet",
-                "max-image-preview"
+                "max-image-preview",
             };
             robotsTag.Load(data, specialWords);
 
@@ -128,7 +128,7 @@
             var specialWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
                 "max-snippet",
-                "max-image-preview"
+                "max-image-preview",
             };
             robotsTag.Load(data, specialWords);
 

@@ -229,7 +229,7 @@
                 {CustomField}: example.com";
             var customFields = new HashSet<string>
             {
-                CustomField
+                CustomField,
             };
             await robotsTxt.Load(data, customFields: customFields);
             const string UserAgent2 = "otherbot";
@@ -332,7 +332,7 @@
 
             var misspelledFields = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { MisspelledDirective, "Disallow" }
+                { MisspelledDirective, "Disallow" },
             };
             await robotsTxt.Load(data, misspelledFields: misspelledFields);
 
@@ -599,7 +599,7 @@
             var expectedSitemaps = new HashSet<string>()
             {
                 $"{Host}/{Filename1}",
-                url2
+                url2,
             };
             var data = $@"
                 sitemap: {url1}
