@@ -217,5 +217,27 @@
             tag = tags.Current;
             Assert.Equal($"{RobotsTag.UserAgentForCatchAll}: {Third}", tag.ToString());
         }
+
+        [Fact]
+        public void UnavailableAfter()
+        {
+            var robotsTag = new RobotsTag();
+            const string Directive = "unavailable_after";
+            var date = "4 Jul 2000 16:30:00 GMT";
+            var data = new List<string>()
+            {
+                $"{Directive}: {date}",
+            };
+            var specialWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "unavailable_after",
+            };
+            robotsTag.Load(data, specialWords);
+
+            var tags = robotsTag.GetTags(RobotsTag.UserAgentForCatchAll, Directive);
+            tags.MoveNext();
+            var tag = tags.Current;
+            Assert.Equal(DateTime.Parse(date), DateTime.Parse(tag.Value));
+        }
     }
 }
