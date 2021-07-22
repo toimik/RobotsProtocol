@@ -46,7 +46,7 @@
             var tagCount = robotsTag.GetTagCount("robots");
             Console.WriteLine($"There are {tagCount} tags for 'robots' user agent: ");
 
-            // List the tags; each tag is in the order of occurrences
+            // List the tags
             var tags = robotsTag.GetTags("robots");
             while (tags.MoveNext())
             {

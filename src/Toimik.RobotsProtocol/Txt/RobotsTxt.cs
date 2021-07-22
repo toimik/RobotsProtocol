@@ -238,8 +238,7 @@ namespace Toimik.RobotsProtocol
         /// </param>
         /// <param name="customFields">
         /// Optional set of <b>case-insensitive</b> fields whose value(s) must be extracted. The
-        /// values are left as-is but with leading and trailing spaces removed and are in order of
-        /// occurrences.
+        /// values are left as-is but with leading and trailing spaces removed.
         /// </param>
         /// <param name="misspelledFields">
         /// Optional mapping of <b>case-insensitive</b> misspelled fields to their corresponding
@@ -485,8 +484,7 @@ namespace Toimik.RobotsProtocol
         /// </param>
         /// <param name="customFields">
         /// Optional set of <b>case-insensitive</b> fields whose value(s) must be extracted. The
-        /// values are left as-is but with leading and trailing spaces removed and are in order of
-        /// occurrences.
+        /// values are left as-is but with leading and trailing spaces removed.
         /// </param>
         /// <param name="misspelledFields">
         /// Optional mapping of <b>case-insensitive</b> misspelled fields to their corresponding
@@ -574,9 +572,8 @@ namespace Toimik.RobotsProtocol
                 {
                     path = UnescapePath(path);
 
-                    // The longest path takes precedence because it is the most specific. However,
-                    // since a wild card is considered as an infinite sequence of characters, the
-                    // first path consisting of a wild card, if any, takes effect.
+                    // The longest path takes precedence because it is the most specific. This
+                    // applies regardless of whether the path consists of a wild card (*).
                     if (isAllowed)
                     {
                         if (path.Length > effectedAllow.Length)
