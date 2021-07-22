@@ -194,31 +194,6 @@
         }
 
         [Fact]
-        public void TagsReturnedInOrderOfOccurrenceIgnoringDuplicates()
-        {
-            const string First = "all";
-            const string Second = "max-snippet: 100";
-            const string Third = "max-image-preview: none";
-            var robotsTag = new RobotsTag();
-            var data = new List<string>()
-            {
-                $"{First},{Second},{Second},{First},{Third}".ToUpper(),
-            };
-            robotsTag.Load(data);
-
-            var tags = robotsTag.GetTags(RobotsTag.UserAgentForCatchAll);
-            tags.MoveNext();
-            var tag = tags.Current;
-            Assert.Equal($"{RobotsTag.UserAgentForCatchAll}: {First}", tag.ToString());
-            tags.MoveNext();
-            tag = tags.Current;
-            Assert.Equal($"{RobotsTag.UserAgentForCatchAll}: {Second}", tag.ToString());
-            tags.MoveNext();
-            tag = tags.Current;
-            Assert.Equal($"{RobotsTag.UserAgentForCatchAll}: {Third}", tag.ToString());
-        }
-
-        [Fact]
         public void UnavailableAfter()
         {
             var robotsTag = new RobotsTag();
