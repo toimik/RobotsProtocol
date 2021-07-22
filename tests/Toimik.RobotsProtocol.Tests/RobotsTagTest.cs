@@ -194,6 +194,22 @@
         }
 
         [Fact]
+        public void TagsReturnedIgnoringDuplicates()
+        {
+            const string First = "all";
+            const string Second = "max-snippet: 100";
+            const string Third = "max-image-preview: none";
+            var robotsTag = new RobotsTag();
+            var data = new List<string>()
+            {
+                $"{First},{Second},{Second},{First},{Third}".ToUpper(),
+            };
+            robotsTag.Load(data);
+
+            Assert.Equal(3, robotsTag.GetTagCount(RobotsTag.UserAgentForCatchAll));
+        }
+
+        [Fact]
         public void UnavailableAfter()
         {
             var robotsTag = new RobotsTag();
