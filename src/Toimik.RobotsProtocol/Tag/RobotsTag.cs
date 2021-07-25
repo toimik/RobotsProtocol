@@ -23,13 +23,13 @@ namespace Toimik.RobotsProtocol
     /// Represents the counterpart of a /robots.txt but for page-level settings.
     /// </summary>
     /// <remarks>
-    /// Use this to query the loaded values of Robots Meta Tags and X-Robots-Tag HTTP headers.
+    /// Use this to load and query values of Robots Meta Tags and X-Robots-Tag HTTP headers.
     /// <para>
     /// Unlike /robots.txt, there is no standard directives to adhere to. As such, no convenience
     /// methods are provided for direct access to the respective values.
     /// </para>
     /// <para>
-    /// <em>NB: The user agent parameter passed to methods will, if enabled, fall back directly to
+    /// <em>NB: If enabled, the user agent parameter passed to methods falls back directly to
     /// <c>robots</c> if there is no exact case-insensitive match.</em>
     /// </para>
     /// </remarks>
@@ -115,8 +115,8 @@ namespace Toimik.RobotsProtocol
         /// (e.g. max-snippet is the name of this valued directive: <em>max-snippet: 10</em>).
         /// <para>
         /// All directives in the form of <c>directive: value</c> appearing as the prefix of a datum
-        /// will have its <c>directive</c> treated as the name of a targeted user agent unless the
-        /// directive is specified in this set.
+        /// are treated as the name of a targeted user agent unless the directive is specified in
+        /// this set.
         /// </para>
         /// </param>
         /// <returns>

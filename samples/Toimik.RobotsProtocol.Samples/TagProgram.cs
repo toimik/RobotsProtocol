@@ -39,7 +39,7 @@
                 // ... Add accordingly when used in your program
             };
 
-            // Load the data to parse. This will extract every directive into their own Tag class
+            // Load the data to parse. This extracts every directive into their own Tag class
             _ = robotsTag.Load(data, specialWords);
 
             // There should be three tags for the default user agent.
