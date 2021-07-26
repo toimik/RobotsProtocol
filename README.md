@@ -2,8 +2,6 @@
 
 .NET 5 C# [robots.txt](https://en.wikipedia.org/wiki/Robots_exclusion_standard) parser and a C# [Robots Meta Tag / X-Robots-Tag](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag) parser.
 
-*Please star this project*
-
 ## Features
 
 ### RobotsTxt.cs
@@ -29,19 +27,13 @@
 #### Package Manager
 
 ```command
-PM> Install-Package Toimik.RobotsProtocol -Version 0.1.1
+PM> Install-Package Toimik.RobotsProtocol
 ```
 
 #### .NET CLI
 
 ```command
-> dotnet add package Toimik.RobotsProtocol --version 0.1.1
-```
-
-#### PackageReference
-
-```command
-<PackageReference Include="Toimik.RobotsProtocol" Version="0.1.1" />
+> dotnet add package Toimik.RobotsProtocol
 ```
 
 ### Usage
