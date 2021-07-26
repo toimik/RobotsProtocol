@@ -520,7 +520,7 @@ namespace Toimik.RobotsProtocol
         /// Loads, for this instance, the data of a /robots.txt from a <see cref="String"/>.
         /// </summary>
         /// <param name="data">
-        /// data of a /robots.txt.
+        /// Data of a /robots.txt.
         /// </param>
         /// <param name="isAllowDirectiveIgnored">
         /// Optional indication of whether the <c>Allow</c> directive is ignored. (This option is
