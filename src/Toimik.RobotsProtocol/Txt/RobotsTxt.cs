@@ -18,6 +18,7 @@ namespace Toimik.RobotsProtocol
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -62,6 +63,8 @@ namespace Toimik.RobotsProtocol
     /// <seealso cref="http://www.robotstxt.org/"/>
     public sealed class RobotsTxt
     {
+        private const double DefaultMatchTimeoutInSeconds = 5;
+
         private const string UserAgentForCatchAll = "*";
 
         private readonly IDictionary<string, ISet<string>> customFieldToValues = new Dictionary<string, ISet<string>>(StringComparer.OrdinalIgnoreCase);
@@ -70,13 +73,51 @@ namespace Toimik.RobotsProtocol
 
         private readonly IDictionary<string, RuleGroup> userAgentToRuleGroup = new Dictionary<string, RuleGroup>(StringComparer.OrdinalIgnoreCase);
 
-        public RobotsTxt()
+        /// <summary>
+        /// Creates an instance of the <see cref="RobotsTxt"/> class.
+        /// </summary>
+        /// <param name="matchTimeout">
+        /// <see cref="MatchTimeout"/>
+        /// </param>
+        public RobotsTxt(double matchTimeout = DefaultMatchTimeoutInSeconds)
         {
+            MatchTimeout = matchTimeout;
         }
+
+        /// <summary>
+        /// Gets, for this instance, the timeout (in seconds) allocated to each matching of a
+        /// directive containing wild card(s) against a path. After the timeout, the result is a no
+        /// match. The default value is 5.
+        /// </summary>
+        /// <remarks>
+        /// This is necessary because ill-intent web masters may intentionally create directives
+        /// causing excessive backtracking.
+        /// </remarks>
+        public double MatchTimeout { get; }
 
         public int SitemapCount => sitemaps.Count;
 
         public IEnumerator<string> Sitemaps => sitemaps.GetEnumerator();
+
+        [ExcludeFromCodeCoverage]
+        public static bool IsMatch(string pattern, string pathWithOptionalQuery, double matchTimeout = DefaultMatchTimeoutInSeconds)
+        {
+            bool isMatch;
+            try
+            {
+                isMatch = Regex.IsMatch(
+                    pathWithOptionalQuery,
+                    pattern,
+                    RegexOptions.None,
+                    TimeSpan.FromSeconds(matchTimeout));
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                isMatch = false;
+            }
+
+            return isMatch;
+        }
 
         public void AddCustom(string field, string value)
         {
@@ -557,15 +598,16 @@ namespace Toimik.RobotsProtocol
                 var isMatchBySuffix = path.EndsWith("$");
 
                 bool isMatch;
+
                 if (isMatchBySuffix)
                 {
-                    isMatch = new Regex($"{path}$").IsMatch(pathWithOptionalQuery);
+                    isMatch = IsMatch($"{path}$", pathWithOptionalQuery, MatchTimeout);
                 }
                 else
                 {
                     isMatch = path.EndsWith("/")
                         ? pathWithOptionalQuery.IndexOf(path) != -1
-                        : new Regex($"^{path}").IsMatch(pathWithOptionalQuery);
+                        : IsMatch($"^{path}", pathWithOptionalQuery, MatchTimeout);
                 }
 
                 if (isMatch)
