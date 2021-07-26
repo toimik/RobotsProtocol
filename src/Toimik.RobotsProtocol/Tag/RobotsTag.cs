@@ -123,8 +123,11 @@ namespace Toimik.RobotsProtocol
         /// List of <see cref="Error{TagErrorCode}"/>, if any.
         /// </returns>
         /// <remarks>
+        /// All existing entries, if any, are cleared when this method is called.
+        /// <para>
         /// Each directive and value, if any, is extracted into individual <see cref="Tag"/> that is
         /// associated with the corresponding user agent.
+        /// </para>
         /// </remarks>
         public IList<Error<TagErrorCode>> Load(IList<string> data, ISet<string> specialWords = null)
         {

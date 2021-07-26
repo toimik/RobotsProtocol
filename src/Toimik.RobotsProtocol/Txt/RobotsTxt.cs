@@ -290,6 +290,9 @@ namespace Toimik.RobotsProtocol
         /// Every <see cref="Error"/>, if any, found when parsing the data. This is never
         /// <c>null</c>.
         /// </returns>
+        /// <remarks>
+        /// All existing entries, if any, are cleared when this method is called.
+        /// </remarks>
         public async Task<IList<Error<TxtErrorCode>>> Load(
             Stream stream,
             bool isAllowDirectiveIgnored = false,
@@ -536,6 +539,9 @@ namespace Toimik.RobotsProtocol
         /// Every <see cref="Error"/>, if any, found when parsing the data. This is never
         /// <c>null</c>.
         /// </returns>
+        /// <remarks>
+        /// All existing entries, if any, are cleared when this method is called.
+        /// </remarks>
         public async Task<IList<Error<TxtErrorCode>>> Load(
             string data,
             bool isAllowDirectiveIgnored = false,
