@@ -8,7 +8,7 @@
         public static void Main()
         {
             var content = @"
-                # This is a sample content of a simple /robots.txt
+                # This is a sample content of a simple robots.txt
 
                 User-agent: my-bot
                 User-agent: *       # This value is the catch-all for all other bots

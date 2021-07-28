@@ -9,7 +9,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Company>Toimik</Company>
     <Description>
-      Parsers for Robots Exclusion Standard (aka /robots.txt), Robots Meta Tag, and X-Robots-Tag.
+      Parsers for Robots Exclusion Standard (aka robots.txt), Robots Meta Tag, and X-Robots-Tag.
 
       Visit Project Site for documentation.
     </Description>

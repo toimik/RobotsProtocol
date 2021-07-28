@@ -17,7 +17,7 @@
 namespace Toimik.RobotsProtocol
 {
     /// <summary>
-    /// Represents a line in a /robots.txt or a list of HTTP Meta tags / X-Robots-Tag values.
+    /// Represents a line in a robots.txt or a list of HTTP Meta tags / X-Robots-Tag values.
     /// </summary>
     public sealed class Line
     {

@@ -21,7 +21,7 @@ namespace Toimik.RobotsProtocol
 
     /// <summary>
     /// Represents a directive ( <c>Disallow: &lt;path&gt;</c> or <c>Allow: &lt;path&gt;</c>) in a
-    /// /robots.txt.
+    /// robots.txt.
     /// </summary>
     /// <remarks>
     /// According to Google's specs, only the <c>allow</c> and <c>disallow</c> fields are called

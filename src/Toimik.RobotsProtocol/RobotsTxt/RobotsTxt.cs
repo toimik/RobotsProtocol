@@ -25,7 +25,7 @@ namespace Toimik.RobotsProtocol
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Represents a /robots.txt.
+    /// Represents a robots.txt.
     /// </summary>
     /// <remarks>
     /// By default, values of the following case-insensitive fields are parsed by
@@ -268,7 +268,7 @@ namespace Toimik.RobotsProtocol
         }
 
         /// <summary>
-        /// Loads, for this instance, the data of a /robots.txt from a <see cref="Stream"/>.
+        /// Loads, for this instance, the data of a robots.txt from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="stream">
         /// A stream containing the data of a robots.txt. This is left opened after processing.
@@ -495,13 +495,13 @@ namespace Toimik.RobotsProtocol
             }
             while ((text = await reader.ReadLineAsync()) != null);
 
-            // If data is made up of comment(s) only, treat the /robots.txt as if it was empty
+            // If data is made up of comment(s) only, treat the robots.txt as if it was empty
             if (skippedLineCount == lineNumber)
             {
                 return new List<Error<TxtErrorCode>>(0);
             }
 
-            // User-agent(s) may be found at the end of a /robots.txt without any corresponding
+            // User-agent(s) may be found at the end of a robots.txt without any corresponding
             // directive defined for them. That is equivalent to not defining those user-agent(s) in
             // the first place. However, they are still added - but with an empty directive - for
             // the sake of keeping the original data intact.
@@ -517,10 +517,10 @@ namespace Toimik.RobotsProtocol
         }
 
         /// <summary>
-        /// Loads, for this instance, the data of a /robots.txt from a <see cref="String"/>.
+        /// Loads, for this instance, the data of a robots.txt from a <see cref="String"/>.
         /// </summary>
         /// <param name="data">
-        /// Data of a /robots.txt.
+        /// Data of a robots.txt.
         /// </param>
         /// <param name="isAllowDirectiveIgnored">
         /// Optional indication of whether the <c>Allow</c> directive is ignored. (This option is

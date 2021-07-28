@@ -17,7 +17,7 @@
 namespace Toimik.RobotsProtocol
 {
     /// <summary>
-    /// Represents the result of matching /robots.txt directives to a URL.
+    /// Represents the result of matching robots.txt directives to a URL.
     /// </summary>
     /// <remarks>
     /// If <see cref="UserAgent"/> is <c>null</c>, the match is an implicit allow due to the absence
