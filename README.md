@@ -42,15 +42,15 @@ Snippets are shown below.
 
 Refer to demo programs in `samples` folder for complete source code.
 
-#### RobotsTxt.cs (for parsing /robots.txt)
+#### RobotsTxt.cs (for parsing robots.txt)
 ```c# 
 var robotsTxt = new RobotsTxt();
 
-// Load content of a /robots.txt from a String
+// Load content of a robots.txt from a String
 var content = "...";
 _ = robotsTxt.Load(content);
 
-// Load content of a /robots.txt from a Stream
+// Load content of a robots.txt from a Stream
 // var stream = "...";
 // _ = await robotsTxt.Load(stream);
 
