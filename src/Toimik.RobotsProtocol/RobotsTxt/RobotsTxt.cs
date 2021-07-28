@@ -493,7 +493,7 @@ namespace Toimik.RobotsProtocol
                     }
                 }
             }
-            while ((text = reader.ReadLine()) != null);
+            while ((text = await reader.ReadLineAsync()) != null);
 
             // If data is made up of comment(s) only, treat the /robots.txt as if it was empty
             if (skippedLineCount == lineNumber)
