@@ -542,7 +542,7 @@ namespace Toimik.RobotsProtocol
         /// <remarks>
         /// All existing entries, if any, are cleared when this method is called.
         /// </remarks>
-        public async Task<IList<Error<TxtErrorCode>>> Load(
+        public IList<Error<TxtErrorCode>> Load(
             string data,
             bool isAllowDirectiveIgnored = false,
             ISet<string> customFields = null,
@@ -550,11 +550,11 @@ namespace Toimik.RobotsProtocol
         {
             var byteArray = Encoding.UTF8.GetBytes(data);
             using var stream = new MemoryStream(byteArray);
-            var errors = await Load(
+            var errors = Load(
                 stream,
                 isAllowDirectiveIgnored,
                 customFields,
-                misspelledFields);
+                misspelledFields).Result;
             return errors;
         }
 

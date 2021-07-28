@@ -46,10 +46,13 @@ Refer to demo programs in `samples` folder for complete source code.
 ```c# 
 var robotsTxt = new RobotsTxt();
 
-// Content of the /robots.txt as a String or Stream
+// Load content of a /robots.txt from a String
 var content = "...";
+_ = robotsTxt.Load(content);
 
-_ = await robotsTxt.Load(content);
+// Load content of a /robots.txt from a Stream
+// var stream = "...";
+// _ = await robotsTxt.Load(stream);
 
 var isAllowed = robotsTxt.IsAllowed("autobot", "/folder/file.htm"};
 ```

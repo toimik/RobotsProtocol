@@ -2,66 +2,65 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Xunit;
 
     public class RobotsTxtTest
     {
         [Fact]
-        public async Task AllowDefinedAtValidLocation()
+        public void AllowDefinedAtValidLocation()
         {
             var robotsTxt = new RobotsTxt();
             var data = @$"
                 user-agent: *
                 {new Directive(isAllowed: true, path: string.Empty)}"; // allow:
 
-            var errors = await robotsTxt.Load(data);
+            var errors = robotsTxt.Load(data);
 
             Assert.Empty(errors);
         }
 
         [Fact]
-        public async Task AllowDefinedAtValidLocationButIsIgnored()
+        public void AllowDefinedAtValidLocationButIsIgnored()
         {
             var robotsTxt = new RobotsTxt();
             var data = @$"
                 user-agent: *
                 {new Directive(isAllowed: true, path: string.Empty)}"; // allow:
 
-            await robotsTxt.Load(data, isAllowDirectiveIgnored: true);
+            robotsTxt.Load(data, isAllowDirectiveIgnored: true);
 
             // An ignored allow has the same meaning of disallow nothing
             Assert.True(robotsTxt.IsAllowed("bot", "/"));
         }
 
         [Fact]
-        public async Task AllowDefinedWithoutColonAtValidLocationButIsIgnored()
+        public void AllowDefinedWithoutColonAtValidLocationButIsIgnored()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
                 user-agent: *
                 allow";
 
-            var errors = await robotsTxt.Load(data, isAllowDirectiveIgnored: true);
+            var errors = robotsTxt.Load(data, isAllowDirectiveIgnored: true);
 
             Assert.Empty(errors);
         }
 
         [Fact]
-        public async Task BlankLines()
+        public void BlankLines()
         {
             var robotsTxt = new RobotsTxt();
             var data = @$"
                 {Environment.NewLine}
                 {Environment.NewLine}";
 
-            var errors = await robotsTxt.Load(data);
+            var errors = robotsTxt.Load(data);
 
             Assert.Empty(errors);
         }
 
         [Fact]
-        public async Task CasingAndInsignificantSpacesDoNotMatter()
+        public void CasingAndInsignificantSpacesDoNotMatter()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
@@ -76,26 +75,26 @@
 
                 #";
 
-            var errors = await robotsTxt.Load(data);
+            var errors = robotsTxt.Load(data);
 
             Assert.Empty(errors);
         }
 
         [Fact]
-        public async Task Comments()
+        public void Comments()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
                 #Comment
                 # Comment ";
 
-            var errors = await robotsTxt.Load(data);
+            var errors = robotsTxt.Load(data);
 
             Assert.Empty(errors);
         }
 
         [Fact]
-        public async Task CrawlDelay()
+        public void CrawlDelay()
         {
             var robotsTxt = new RobotsTxt();
             const int ExpectedCrawlDelay = 1;
@@ -104,18 +103,18 @@
                 crawl-delay: {ExpectedCrawlDelay} # This takes effect because it is the latest entry with a value that can be parsed into a number
                 crawl-delay: b";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.Equal(ExpectedCrawlDelay, robotsTxt.GetCrawlDelay("bot"));
         }
 
         [Fact]
-        public async Task CrawlDelayDefinedAtInvalidLocation()
+        public void CrawlDelayDefinedAtInvalidLocation()
         {
             var robotsTxt = new RobotsTxt();
             var data = "crawl-delay: 1";
 
-            var errors = await robotsTxt.Load(data);
+            var errors = robotsTxt.Load(data);
 
             Assert.Single(errors);
 
@@ -128,12 +127,12 @@
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public async Task DirectiveDefinedAtInvalidLocation(bool flag)
+        public void DirectiveDefinedAtInvalidLocation(bool flag)
         {
             var robotsTxt = new RobotsTxt();
             var data = new Directive(isAllowed: flag, path: string.Empty).ToString();
 
-            var errors = await robotsTxt.Load(data);
+            var errors = robotsTxt.Load(data);
 
             Assert.Single(errors);
 
@@ -144,7 +143,7 @@
         }
 
         [Fact]
-        public async Task HostCaptured()
+        public void HostCaptured()
         {
             var robotsTxt = new RobotsTxt();
             const string Field = "Host";
@@ -155,7 +154,7 @@
                 Field,
             };
 
-            await robotsTxt.Load(data, customFields: customFields);
+            robotsTxt.Load(data, customFields: customFields);
 
             var values = robotsTxt.GetCustom(Field);
             var actualValue = Utils.GetOnlyItem(values);
@@ -163,7 +162,7 @@
         }
 
         [Fact]
-        public async Task HostCapturedOnce()
+        public void HostCapturedOnce()
         {
             var robotsTxt = new RobotsTxt();
             const string Field = "Host";
@@ -176,14 +175,14 @@
                 Field,
             };
 
-            await robotsTxt.Load(data, customFields: customFields);
+            robotsTxt.Load(data, customFields: customFields);
 
             var actualCount = robotsTxt.GetCustomCount(Field);
             Assert.Equal(1, actualCount);
         }
 
         [Fact]
-        public async Task HostUncaptured()
+        public void HostUncaptured()
         {
             var robotsTxt = new RobotsTxt();
             const string Field = "Host";
@@ -191,18 +190,18 @@
                 Sitemap: http://www.example.com/sitemap.xml.gz
                 {Field}: example.com";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.Equal(0, robotsTxt.GetCustomCount(Field));
             Assert.False(robotsTxt.GetCustom(Field).MoveNext());
         }
 
         [Fact]
-        public async Task InitialState()
+        public void InitialState()
         {
             var robotsTxt = new RobotsTxt();
 
-            await robotsTxt.Load("");
+            robotsTxt.Load("");
 
             Assert.Null(robotsTxt.GetCrawlDelay("not found"));
             Assert.False(robotsTxt.GetCustom("not found").MoveNext());
@@ -214,7 +213,7 @@
         }
 
         [Fact]
-        public async Task LoadStartsAfresh()
+        public void LoadStartsAfresh()
         {
             var robotsTxt = new RobotsTxt();
             const string UserAgent1 = "bot";
@@ -231,7 +230,7 @@
             {
                 CustomField,
             };
-            await robotsTxt.Load(data, customFields: customFields);
+            robotsTxt.Load(data, customFields: customFields);
             const string UserAgent2 = "otherbot";
             data = @$"
                 user-agent: {UserAgent2}
@@ -241,7 +240,7 @@
                 sitemap: http://www.example.com/sitemap.xml
 
                 {CustomField}: www.example.com";
-            await robotsTxt.Load(data, customFields: customFields);
+            robotsTxt.Load(data, customFields: customFields);
 
             Assert.Equal(1, robotsTxt.SitemapCount);
             Assert.Equal(1, robotsTxt.GetCustomCount(CustomField));
@@ -257,21 +256,21 @@
         }
 
         [Fact]
-        public async Task MatchByImplicitAllow()
+        public void MatchByImplicitAllow()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
                 user-agent: bot
                 disallow: /";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             var matchResult = robotsTxt.Match("bottle", "/file");
             Assert.Null(matchResult.UserAgent);
         }
 
         [Fact]
-        public async Task MatchByMostSpecific()
+        public void MatchByMostSpecific()
         {
             var robotsTxt = new RobotsTxt();
             const string ExpectedPath = "/folder/p";
@@ -280,7 +279,7 @@
                 allow: /folder
                 allow: {ExpectedPath}";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             var matchResult = robotsTxt.Match("bot", "/folder/page");
             Assert.Equal(ExpectedPath, matchResult.Directive.Path);
@@ -302,7 +301,7 @@
         [InlineData("CRAWL-DELAY")]
         [InlineData("Crawl-delay:")]
         [InlineData(" crawl-delay : # With spaces ")]
-        public async Task MissingValue(string field)
+        public void MissingValue(string field)
         {
             var robotsTxt = new RobotsTxt();
             var data = @$"
@@ -310,7 +309,7 @@
                 user-agent: * # This enables testing for 'allow' and 'disallow' fields
                 {field}";
 
-            var errors = await robotsTxt.Load(data);
+            var errors = robotsTxt.Load(data);
 
             Assert.Single(errors);
 
@@ -321,7 +320,7 @@
         }
 
         [Fact]
-        public async Task Misspelling()
+        public void Misspelling()
         {
             var robotsTxt = new RobotsTxt();
             const string Path = "/path";
@@ -334,7 +333,7 @@
             {
                 { MisspelledDirective, "Disallow" },
             };
-            await robotsTxt.Load(data, misspelledFields: misspelledFields);
+            robotsTxt.Load(data, misspelledFields: misspelledFields);
 
             Assert.False(robotsTxt.IsAllowed("bot", Path));
         }
@@ -342,7 +341,7 @@
         [Theory]
         [InlineData("allow")]
         [InlineData("disallow")]
-        public async Task PathWithoutSlashPrefix(string directive)
+        public void PathWithoutSlashPrefix(string directive)
         {
             var robotsTxt = new RobotsTxt();
             var problematicText = $"{directive}: path";
@@ -350,7 +349,7 @@
                 user-agent: *
                 {problematicText}";
 
-            var errors = await robotsTxt.Load(data);
+            var errors = robotsTxt.Load(data);
 
             Assert.Single(errors);
 
@@ -368,14 +367,14 @@
         [InlineData(true, "/fish")]
         [InlineData(true, "/fish.html")]
         [InlineData(true, "/Fish/Salmon.asp")]
-        public async Task RestrictByFolder(bool isMatch, string path)
+        public void RestrictByFolder(bool isMatch, string path)
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
                 user-agent: *
                 disallow: /fish/";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.Equal(isMatch, robotsTxt.IsAllowed("bot", path));
         }
@@ -392,7 +391,7 @@
         [InlineData("/fish*.php", false, "/fish.php")]
         [InlineData("/fish*.php", false, "/fish-heads/catfish.php?parameters")]
         [InlineData("/fish*.php", true, "/Fish.PHP")]
-        public async Task RestrictByInfix(
+        public void RestrictByInfix(
             string disallowedPath,
             bool isMatch,
             string path)
@@ -402,7 +401,7 @@
                 user-agent: *
                 disallow: {disallowedPath}";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.Equal(isMatch, robotsTxt.IsAllowed("bot", path));
         }
@@ -410,20 +409,20 @@
         [Theory]
         [InlineData("allow", false)]
         [InlineData("disallow", true)]
-        public async Task RestrictByInverse(string disallowedPath, bool isMatch)
+        public void RestrictByInverse(string disallowedPath, bool isMatch)
         {
             var robotsTxt = new RobotsTxt();
             var data = @$"
                 user-agent: *
                 {disallowedPath}: ";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.Equal(isMatch, robotsTxt.IsAllowed("bot", "/"));
         }
 
         [Fact]
-        public async Task RestrictByLeastRestrictiveWhenBothMatch()
+        public void RestrictByLeastRestrictiveWhenBothMatch()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
@@ -431,13 +430,13 @@
                 allow: /$
                 disallow: /";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.True(robotsTxt.IsAllowed("bot", "/"));
         }
 
         [Fact]
-        public async Task RestrictByLeastRestrictiveWhenMatchesAreIdentical()
+        public void RestrictByLeastRestrictiveWhenMatchesAreIdentical()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
@@ -445,13 +444,13 @@
                 allow: /folder
                 disallow: /folder";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.True(robotsTxt.IsAllowed("bot", "/folder/page"));
         }
 
         [Fact]
-        public async Task RestrictByLeastRestrictiveWhenMatchesHaveSamePathLength()
+        public void RestrictByLeastRestrictiveWhenMatchesHaveSamePathLength()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
@@ -459,13 +458,13 @@
                 allow: /page
                 disallow: /*.ph";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.True(robotsTxt.IsAllowed("bot", "/page.php5"));
         }
 
         [Fact]
-        public async Task RestrictByLongerPathWhenBothMatch()
+        public void RestrictByLongerPathWhenBothMatch()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
@@ -473,13 +472,13 @@
                 allow: /page
                 disallow: /*.htm";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.False(robotsTxt.IsAllowed("bot", "/page.htm"));
         }
 
         [Fact]
-        public async Task RestrictByLongerPathWhenMatchesHaveDifferentPathLength()
+        public void RestrictByLongerPathWhenMatchesHaveDifferentPathLength()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
@@ -487,7 +486,7 @@
                 allow: /p
                 disallow: /";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.True(robotsTxt.IsAllowed("bot", "/page"));
         }
@@ -513,7 +512,7 @@
         [InlineData("/fish*", true, "/catfish")]
         [InlineData("/fish*", true, "/?id=fish")]
         [InlineData("/fish*", true, "/desert/fish")]
-        public async Task RestrictByPrefix(
+        public void RestrictByPrefix(
             string disallowedPath,
             bool isMatch,
             string path)
@@ -523,7 +522,7 @@
                 user-agent: *
                 disallow: {disallowedPath}";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.Equal(isMatch, robotsTxt.IsAllowed("bot", path));
         }
@@ -533,14 +532,14 @@
         [InlineData("/", "/path")]
         [InlineData("/*", "/")]
         [InlineData("/*", "/path")]
-        public async Task RestrictBySlash(string disallowedPath, string path)
+        public void RestrictBySlash(string disallowedPath, string path)
         {
             var robotsTxt = new RobotsTxt();
             var data = @$"
                 user-agent: *
                 disallow: {disallowedPath}";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.False(robotsTxt.IsAllowed("bot", path));
         }
@@ -552,20 +551,20 @@
         [InlineData(true, "/filename.php/")]
         [InlineData(true, "/filename.php5")]
         [InlineData(true, "/windows.PHP")]
-        public async Task RestrictBySuffix(bool isMatch, string path)
+        public void RestrictBySuffix(bool isMatch, string path)
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
                 user-agent: *
                 disallow: /*.php$";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.Equal(isMatch, robotsTxt.IsAllowed("bot", path));
         }
 
         [Fact]
-        public async Task RuleGroup()
+        public void RuleGroup()
         {
             const string UserAgent = "bot";
 
@@ -580,7 +579,7 @@
                 Allow: /path
                 Crawl-delay: 1
                 Disallow: /";
-            await robotsTxt2.Load(data);
+            robotsTxt2.Load(data);
 
             var ruleGroup = robotsTxt1.GetRuleGroup(UserAgent);
             var ruleGroup2 = robotsTxt2.GetRuleGroup(UserAgent);
@@ -588,7 +587,7 @@
         }
 
         [Fact]
-        public async Task Sitemaps()
+        public void Sitemaps()
         {
             var robotsTxt = new RobotsTxt();
             const string Host = "http://www.example.com";
@@ -609,7 +608,7 @@
                 sitemap: {Host}/ # Not added due to short filename
                 sitemap: example.com/{Filename1} # Not added due to absence of scheme";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.Equal(2, robotsTxt.SitemapCount);
 
@@ -621,7 +620,7 @@
         }
 
         [Fact]
-        public async Task UserAgentDispersed()
+        public void UserAgentDispersed()
         {
             var robotsTxt = new RobotsTxt();
             const string UserAgent = "a";
@@ -637,7 +636,7 @@
                 user-agent: {UserAgent}
                 disallow: {Path2}";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             var isAllowed = robotsTxt.IsAllowed(UserAgent, Path1);
             Assert.False(isAllowed);
@@ -647,20 +646,20 @@
         }
 
         [Fact]
-        public async Task UserAgentMatchNone()
+        public void UserAgentMatchNone()
         {
             var robotsTxt = new RobotsTxt();
             var data = @"
                 user-agent: bottle
                 disallow: /";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.True(robotsTxt.IsAllowed("bot", "/path"));
         }
 
         [Fact]
-        public async Task UserAgentMatchWildcard()
+        public void UserAgentMatchWildcard()
         {
             var robotsTxt = new RobotsTxt();
             const string UserAgent = "bot";
@@ -668,13 +667,13 @@
                 user-agent: {UserAgent}*
                 disallow: /";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.False(robotsTxt.IsAllowed($"{UserAgent}y", "/path"));
         }
 
         [Fact]
-        public async Task UserAgentMatcWhole()
+        public void UserAgentMatcWhole()
         {
             var robotsTxt = new RobotsTxt();
             const string UserAgent = "bot";
@@ -682,13 +681,13 @@
                 user-agent: {UserAgent.ToUpper()}
                 disallow: /";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.False(robotsTxt.IsAllowed(UserAgent, "/path"));
         }
 
         [Fact]
-        public async Task UserAgentRepeated()
+        public void UserAgentRepeated()
         {
             var robotsTxt = new RobotsTxt();
             const string UserAgent1 = "c";
@@ -704,7 +703,7 @@
 
                 user-agent: f";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             var isAllowed = robotsTxt.IsAllowed(UserAgent1, Path);
             Assert.False(isAllowed);
@@ -714,7 +713,7 @@
         }
 
         [Fact]
-        public async Task UserAgentWithVersion()
+        public void UserAgentWithVersion()
         {
             var robotsTxt = new RobotsTxt();
             const string UserAgent = "bot";
@@ -722,7 +721,7 @@
                 user-agent: {UserAgent.ToUpper()} /1.23
                 disallow: /";
 
-            await robotsTxt.Load(data);
+            robotsTxt.Load(data);
 
             Assert.False(robotsTxt.IsAllowed(UserAgent, "/path"));
         }
