@@ -290,8 +290,14 @@ namespace Toimik.RobotsProtocol
         /// A <see cref="Task"/> containing every <see cref="Error"/>, if any, found when parsing
         /// the data. This is never <c>null</c>.
         /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// Thrown when <paramref name="stream"/> is manually closed.
+        /// </exception>
         /// <remarks>
         /// All existing entries, if any, are cleared when this method is called.
+        /// <para>
+        /// Call <see cref="Stream.Close()"/> on <paramref name="stream"/> to cancel loading.
+        /// </para>
         /// </remarks>
         public async Task<IList<Error<TxtErrorCode>>> Load(
             Stream stream,
