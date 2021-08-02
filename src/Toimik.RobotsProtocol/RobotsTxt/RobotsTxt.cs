@@ -542,8 +542,8 @@ namespace Toimik.RobotsProtocol
         /// mapped to <c>disallow</c>.
         /// </param>
         /// <returns>
-        /// A <see cref="Task"/> containing every <see cref="Error"/>, if any, found when parsing
-        /// the data. This is never <c>null</c>.
+        /// Every <see cref="Error"/>, if any, found when parsing the data. This is never
+        /// <c>null</c>.
         /// </returns>
         /// <remarks>
         /// All existing entries, if any, are cleared when this method is called.
