@@ -100,7 +100,10 @@ namespace Toimik.RobotsProtocol
         public IEnumerator<string> Sitemaps => sitemaps.GetEnumerator();
 
         [ExcludeFromCodeCoverage]
-        public static bool IsMatch(string pattern, string pathWithOptionalQuery, double matchTimeout = DefaultMatchTimeoutInSeconds)
+        public static bool IsMatch(
+            string pattern,
+            string pathWithOptionalQuery,
+            double matchTimeout = DefaultMatchTimeoutInSeconds)
         {
             bool isMatch;
             try
@@ -610,16 +613,27 @@ namespace Toimik.RobotsProtocol
                 var isMatchBySuffix = path.EndsWith("$");
 
                 bool isMatch;
-
                 if (isMatchBySuffix)
                 {
-                    isMatch = IsMatch($"{path}$", pathWithOptionalQuery, MatchTimeout);
+                    isMatch = IsMatch(
+                        $"{path}$",
+                        pathWithOptionalQuery,
+                        MatchTimeout);
                 }
                 else
                 {
-                    isMatch = path.EndsWith("/")
-                        ? pathWithOptionalQuery.IndexOf(path) != -1
-                        : IsMatch($"^{path}", pathWithOptionalQuery, MatchTimeout);
+                    var isEndsWithSlash = path.EndsWith("/");
+                    if (isEndsWithSlash)
+                    {
+                        isMatch = pathWithOptionalQuery.IndexOf(path) != -1;
+                    }
+                    else
+                    {
+                        isMatch = IsMatch(
+                            $"^{path}",
+                            pathWithOptionalQuery,
+                            MatchTimeout);
+                    }
                 }
 
                 if (isMatch)
