@@ -16,9 +16,6 @@
 
 namespace Toimik.RobotsProtocol
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
     /// Represents a directive ( <c>Disallow: &lt;path&gt;</c> or <c>Allow: &lt;path&gt;</c>) in a
     /// robots.txt.
@@ -27,7 +24,7 @@ namespace Toimik.RobotsProtocol
     /// According to Google's specs, only the <c>allow</c> and <c>disallow</c> fields are called
     /// directives.
     /// </remarks>
-    public sealed class Directive : IComparable
+    public sealed class Directive
     {
         public Directive(bool isAllowed, string path)
         {
@@ -38,23 +35,6 @@ namespace Toimik.RobotsProtocol
         public bool IsAllowed { get; }
 
         public string Path { get; }
-
-        [ExcludeFromCodeCoverage]
-        public int CompareTo(object obj)
-        {
-            if (obj == null)
-            {
-                return 1;
-            }
-
-            if (obj is not Directive otherDirective)
-            {
-                throw new ArgumentException($"Object is not a {nameof(Directive)}");
-            }
-
-            var result = ToString().CompareTo(otherDirective.ToString());
-            return result;
-        }
 
         public override string ToString()
         {

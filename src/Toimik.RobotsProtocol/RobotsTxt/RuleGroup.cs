@@ -24,7 +24,7 @@ namespace Toimik.RobotsProtocol
     /// </summary>
     public sealed class RuleGroup
     {
-        private readonly ISet<Directive> directives = new SortedSet<Directive>();
+        private readonly ISet<Directive> directives = new SortedSet<Directive>(new DirectiveComparer());
 
         public RuleGroup(string userAgent)
         {
@@ -60,6 +60,17 @@ namespace Toimik.RobotsProtocol
 
             var text = builder.ToString();
             return text;
+        }
+
+        private class DirectiveComparer : IComparer<Directive>
+        {
+            public int Compare(Directive directive, Directive otherDirective)
+            {
+                var text1 = directive.ToString();
+                var text2 = otherDirective.ToString();
+                var result = text1.CompareTo(text2);
+                return result;
+            }
         }
     }
 }
