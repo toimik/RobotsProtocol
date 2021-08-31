@@ -66,9 +66,9 @@ namespace Toimik.RobotsProtocol
         {
             public int Compare(Directive directive, Directive otherDirective)
             {
-                var text1 = directive.ToString();
-                var text2 = otherDirective.ToString();
-                var result = text1.CompareTo(text2);
+                var text = directive.ToString();
+                var otherText = otherDirective.ToString();
+                var result = text.CompareTo(otherText);
                 return result;
             }
         }

@@ -301,9 +301,9 @@ namespace Toimik.RobotsProtocol
         {
             public bool Equals(Tag tag, Tag otherTag)
             {
-                var text1 = ToString(tag);
-                var text2 = ToString(otherTag);
-                var isEquals = text1.Equals(text2, StringComparison.OrdinalIgnoreCase);
+                var text = ToString(tag);
+                var otherText = ToString(otherTag);
+                var isEquals = text.Equals(otherText, StringComparison.OrdinalIgnoreCase);
                 return isEquals;
             }
 
