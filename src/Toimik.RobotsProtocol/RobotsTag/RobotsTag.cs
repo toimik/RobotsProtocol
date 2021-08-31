@@ -226,7 +226,7 @@ namespace Toimik.RobotsProtocol
         {
             var tags = new HashSet<Tag>(new TagComparer())
             {
-                tag
+                tag,
             };
             directiveToTags.Add(tag.Directive, tags);
         }

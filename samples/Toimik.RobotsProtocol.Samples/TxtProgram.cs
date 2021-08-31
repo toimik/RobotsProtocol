@@ -40,7 +40,7 @@
             // the values
             var customFields = new HashSet<string>
             {
-                "host"
+                "host",
             };
 
             // If we want to be lenient with misspellings, we specify the mappings here. Otherwise,
@@ -61,7 +61,12 @@
 
             Console.WriteLine();
 
-            var userAgents = new HashSet<string>() { "my-bot", "your-bot", "other-bot" };
+            var userAgents = new HashSet<string>
+            {
+                "my-bot",
+                "your-bot",
+                "other-bot",
+            };
             foreach (string userAgent in userAgents)
             {
                 Console.WriteLine($"Crawl-delay ({userAgent}): {robotsTxt.GetCrawlDelay(userAgent)}");
@@ -69,7 +74,12 @@
 
             Console.WriteLine();
 
-            var paths = new HashSet<string>() { "/", "/path", "/file.html" };
+            var paths = new HashSet<string>
+            {
+                "/",
+                "/path",
+                "/file.html",
+            };
             foreach (string path in paths)
             {
                 foreach (string bot in userAgents)
