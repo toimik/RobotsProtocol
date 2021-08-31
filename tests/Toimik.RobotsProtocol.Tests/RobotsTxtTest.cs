@@ -595,7 +595,7 @@
             const string Filename2 = "SITEMAP2.XML"; // Will not be lowercased
             var url1 = $"{Host.ToUpper()}/{Filename1}";
             var url2 = $"{Host}/{Filename2}";
-            var expectedSitemaps = new HashSet<string>()
+            var expectedSitemaps = new HashSet<string>
             {
                 $"{Host}/{Filename1}",
                 url2,

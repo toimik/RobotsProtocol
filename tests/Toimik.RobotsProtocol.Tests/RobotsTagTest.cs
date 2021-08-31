@@ -32,7 +32,7 @@
         {
             const string Datum = " MAX-SNIPPET: ";
             var robotsTag = new RobotsTag();
-            var data = new List<string>()
+            var data = new List<string>
             {
                 "all",
                 Datum,
@@ -76,7 +76,7 @@
              int tagCount)
         {
             var robotsTag = new RobotsTag();
-            var data = new List<string>()
+            var data = new List<string>
             {
                 datum.ToUpper(),
             };
@@ -121,7 +121,7 @@
             bool flag)
         {
             var robotsTag = new RobotsTag();
-            var data = new List<string>()
+            var data = new List<string>
             {
                 datum.ToUpper(),
             };
@@ -140,13 +140,13 @@
         {
             var robotsTag = new RobotsTag();
             const string UserAgent1 = "bot";
-            var data = new List<string>()
+            var data = new List<string>
             {
                 $"{UserAgent1}: all",
             };
             robotsTag.Load(data);
             const string UserAgent2 = "otherbot";
-            data = new List<string>()
+            data = new List<string>
             {
                 $"{UserAgent2}: none",
             };
@@ -160,7 +160,7 @@
         public void SpacesDoNotMatter()
         {
             var robotsTag = new RobotsTag();
-            var data = new List<string>()
+            var data = new List<string>
             {
                 $"  robots  :  max-snippet  :  100  ".ToUpper(),
             };
@@ -177,7 +177,7 @@
         {
             const string UserAgent = "max-snippet";
             var robotsTag = new RobotsTag();
-            var data = new List<string>()
+            var data = new List<string>
             {
                 $"{UserAgent}: 100, max-image-preview: none".ToUpper(),
             };
@@ -200,7 +200,7 @@
             const string Second = "max-snippet: 100";
             const string Third = "max-image-preview: none";
             var robotsTag = new RobotsTag();
-            var data = new List<string>()
+            var data = new List<string>
             {
                 $"{First},{Second},{Second},{First},{Third}".ToUpper(),
             };
@@ -215,7 +215,7 @@
             var robotsTag = new RobotsTag();
             const string Directive = "unavailable_after";
             var date = "4 Jul 2000 16:30:00 GMT";
-            var data = new List<string>()
+            var data = new List<string>
             {
                 $"{Directive}: {date}",
             };
