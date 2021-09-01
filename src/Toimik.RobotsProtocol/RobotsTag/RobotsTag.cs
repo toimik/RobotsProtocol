@@ -216,7 +216,10 @@ namespace Toimik.RobotsProtocol
                 // e.g. max-snippet : 100
                 var directive = content.Substring(0, index).TrimEnd();
                 var value = content[(index + 1)..].TrimStart();
-                tag = new Tag(directive, value, userAgent);
+                tag = new Tag(
+                    directive,
+                    value,
+                    userAgent);
             }
 
             return tag;

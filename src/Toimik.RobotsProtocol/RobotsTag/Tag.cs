@@ -46,7 +46,10 @@ namespace Toimik.RobotsProtocol
     /// </remarks>
     public class Tag
     {
-        public Tag(string directive, string value = null, string userAgent = null)
+        public Tag(
+            string directive,
+            string value = null,
+            string userAgent = null)
         {
             Directive = directive.ToLower();
             Value = value?.ToLower();
