@@ -167,8 +167,7 @@
             robotsTag.Load(data);
 
             var tags = robotsTag.GetTags(RobotsTag.UserAgentForCatchAll);
-            tags.MoveNext();
-            var tag = tags.Current;
+            var tag = Utils.GetOnlyItem(tags);
             Assert.Equal($"{RobotsTag.UserAgentForCatchAll}: max-snippet: 100", tag.ToString());
         }
 
@@ -187,8 +186,7 @@
             Assert.True(robotsTag.HasTag(UserAgent));
             Assert.Equal(2, robotsTag.GetTagCount(UserAgent));
             var tags = robotsTag.GetTags(UserAgent);
-            tags.MoveNext();
-            var tag = tags.Current;
+            var tag = Utils.GetOnlyItem(tags);
             Assert.Equal("100", tag.Directive);
             Assert.Null(tag.Value);
         }
@@ -229,8 +227,7 @@
             robotsTag.Load(data, specialWords);
 
             var tags = robotsTag.GetTags(RobotsTag.UserAgentForCatchAll, Directive);
-            tags.MoveNext();
-            var tag = tags.Current;
+            var tag = Utils.GetOnlyItem(tags);
             Assert.Equal(DateTime.Parse(date), DateTime.Parse(tag.Value));
         }
     }
