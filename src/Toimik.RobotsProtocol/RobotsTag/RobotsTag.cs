@@ -318,7 +318,7 @@ namespace Toimik.RobotsProtocol
                 var text = tag.Value == null
                     ? tag.Directive
                     : $"{tag.Directive}: {tag.Value}";
-                text = tag.UserAgent == null
+                text = tag.UserAgent.Equals(UserAgentForCatchAll)
                     ? text
                     : $"{tag.UserAgent}: {text}";
                 return text;
