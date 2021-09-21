@@ -10,7 +10,7 @@
         {
         }
 
-        public static T GetOnlyItem<T>(ICollection<T> items)
+        public static T GetOnlyItem<T>(IEnumerable<T> items)
         {
             var enumerator = items.GetEnumerator();
             return GetOnlyItem(enumerator);

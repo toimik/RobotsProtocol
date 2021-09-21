@@ -302,7 +302,7 @@ namespace Toimik.RobotsProtocol
         /// Call <see cref="Stream.Close()"/> on <paramref name="stream"/> to cancel loading.
         /// </para>
         /// </remarks>
-        public async Task<IList<Error<TxtErrorCode>>> Load(
+        public async Task<IEnumerable<Error<TxtErrorCode>>> Load(
             Stream stream,
             bool isAllowDirectiveIgnored = false,
             ISet<string> customFields = null,
@@ -319,10 +319,10 @@ namespace Toimik.RobotsProtocol
             var text = await ReadUntilNonEmptyLine(reader);
             if (text == null)
             {
-                return new List<Error<TxtErrorCode>>(0);
+                return new LinkedList<Error<TxtErrorCode>>();
             }
 
-            var errors = new List<Error<TxtErrorCode>>();
+            var errors = new LinkedList<Error<TxtErrorCode>>();
             var userAgents = new HashSet<string>();
             customFields ??= new HashSet<string>(0);
             misspelledFields ??= new Dictionary<string, string>(0);
@@ -365,7 +365,7 @@ namespace Toimik.RobotsProtocol
                     }
                     else
                     {
-                        errors.Add(new Error<TxtErrorCode>(line, TxtErrorCode.MissingValue));
+                        errors.AddLast(new Error<TxtErrorCode>(line, TxtErrorCode.MissingValue));
                     }
                 }
                 else
@@ -397,14 +397,14 @@ namespace Toimik.RobotsProtocol
 
                             if (userAgents.Count == 0)
                             {
-                                errors.Add(new Error<TxtErrorCode>(line, TxtErrorCode.RuleFoundBeforeUserAgent));
+                                errors.AddLast(new Error<TxtErrorCode>(line, TxtErrorCode.RuleFoundBeforeUserAgent));
                             }
                             else
                             {
                                 if (value != string.Empty
                                     && value[0] != '/')
                                 {
-                                    errors.Add(new Error<TxtErrorCode>(line, TxtErrorCode.InvalidPathFormat));
+                                    errors.AddLast(new Error<TxtErrorCode>(line, TxtErrorCode.InvalidPathFormat));
                                 }
                                 else
                                 {
@@ -422,13 +422,13 @@ namespace Toimik.RobotsProtocol
                         case "crawl-delay":
                             if (userAgents.Count == 0)
                             {
-                                errors.Add(new Error<TxtErrorCode>(line, TxtErrorCode.RuleFoundBeforeUserAgent));
+                                errors.AddLast(new Error<TxtErrorCode>(line, TxtErrorCode.RuleFoundBeforeUserAgent));
                             }
                             else
                             {
                                 if (value == string.Empty)
                                 {
-                                    errors.Add(new Error<TxtErrorCode>(line, TxtErrorCode.MissingValue));
+                                    errors.AddLast(new Error<TxtErrorCode>(line, TxtErrorCode.MissingValue));
                                 }
                                 else
                                 {
@@ -456,7 +456,7 @@ namespace Toimik.RobotsProtocol
                         case "sitemap":
                             if (value == string.Empty)
                             {
-                                errors.Add(new Error<TxtErrorCode>(line, TxtErrorCode.MissingValue));
+                                errors.AddLast(new Error<TxtErrorCode>(line, TxtErrorCode.MissingValue));
                             }
                             else
                             {
@@ -468,7 +468,7 @@ namespace Toimik.RobotsProtocol
                         case "user-agent":
                             if (value == string.Empty)
                             {
-                                errors.Add(new Error<TxtErrorCode>(line, TxtErrorCode.MissingValue));
+                                errors.AddLast(new Error<TxtErrorCode>(line, TxtErrorCode.MissingValue));
                             }
                             else
                             {
@@ -507,7 +507,7 @@ namespace Toimik.RobotsProtocol
             // If data is made up of comment(s) only, treat the robots.txt as if it was empty
             if (skippedLineCount == lineNumber)
             {
-                return new List<Error<TxtErrorCode>>(0);
+                return new LinkedList<Error<TxtErrorCode>>();
             }
 
             // User-agent(s) may be found at the end of a robots.txt without any corresponding
@@ -551,7 +551,7 @@ namespace Toimik.RobotsProtocol
         /// <remarks>
         /// All existing entries, if any, are cleared when this method is called.
         /// </remarks>
-        public IList<Error<TxtErrorCode>> Load(
+        public IEnumerable<Error<TxtErrorCode>> Load(
             string data,
             bool isAllowDirectiveIgnored = false,
             ISet<string> customFields = null,

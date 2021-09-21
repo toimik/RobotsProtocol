@@ -19,7 +19,8 @@
             };
             var errors = robotsTag.Load(data);
 
-            Assert.Equal(errorCount, errors.Count);
+            var actualErrorCount = CountError(errors);
+            Assert.Equal(errorCount, actualErrorCount);
             var error = Utils.GetOnlyItem(errors.GetEnumerator());
             var line = error.Line;
             Assert.Equal(1, line.Number);
@@ -229,6 +230,17 @@
             var tags = robotsTag.GetTags(RobotsTag.UserAgentForCatchAll, Directive);
             var tag = Utils.GetOnlyItem(tags);
             Assert.Equal(DateTime.Parse(date), DateTime.Parse(tag.Value));
+        }
+
+        private static int CountError(IEnumerable<Error<TagErrorCode>> errors)
+        {
+            var actualErrorCount = 0;
+            foreach (Error<TagErrorCode> error in errors)
+            {
+                actualErrorCount++;
+            }
+
+            return actualErrorCount;
         }
     }
 }

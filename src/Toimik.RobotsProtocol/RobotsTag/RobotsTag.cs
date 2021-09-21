@@ -106,7 +106,7 @@ namespace Toimik.RobotsProtocol
         /// Loads, for this instance, the data.
         /// </summary>
         /// <param name="data">
-        /// List of text, each in the form of
+        /// Every line, each in the form of
         /// <c>[user-agent:]directive[:value][,directive[:value]][,...]</c> where bracketed fields
         /// are optional.
         /// </param>
@@ -120,7 +120,7 @@ namespace Toimik.RobotsProtocol
         /// </para>
         /// </param>
         /// <returns>
-        /// List of <see cref="Error{TagErrorCode}"/>, if any.
+        /// Every <see cref="Error{TagErrorCode}"/>, if any.
         /// </returns>
         /// <remarks>
         /// All existing entries, if any, are cleared when this method is called.
@@ -129,10 +129,10 @@ namespace Toimik.RobotsProtocol
         /// associated with the corresponding user agent.
         /// </para>
         /// </remarks>
-        public IList<Error<TagErrorCode>> Load(IList<string> data, ISet<string> specialWords = null)
+        public IEnumerable<Error<TagErrorCode>> Load(IEnumerable<string> data, ISet<string> specialWords = null)
         {
             userAgentToDirectiveToTags.Clear();
-            var errors = new List<Error<TagErrorCode>>();
+            var errors = new LinkedList<Error<TagErrorCode>>();
             if (specialWords == null)
             {
                 specialWords = new HashSet<string>(0);
@@ -186,7 +186,7 @@ namespace Toimik.RobotsProtocol
                     if (token == string.Empty)
                     {
                         var line = new Line(lineNumber, text);
-                        errors.Add(new Error<TagErrorCode>(line, TagErrorCode.MissingValue));
+                        errors.AddLast(new Error<TagErrorCode>(line, TagErrorCode.MissingValue));
                         continue;
                     }
 
