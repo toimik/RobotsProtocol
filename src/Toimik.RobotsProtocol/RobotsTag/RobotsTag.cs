@@ -292,7 +292,7 @@ namespace Toimik.RobotsProtocol
                 {
                     var hasDirective = directiveToTags.ContainsKey(directive);
                     tags = hasDirective
-                        ? (ISet<Tag>)directiveToTags[directive]
+                        ? directiveToTags[directive]
                         : new HashSet<Tag>(0);
                 }
             }
