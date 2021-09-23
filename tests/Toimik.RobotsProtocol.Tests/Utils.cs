@@ -1,15 +1,9 @@
 ﻿namespace Toimik.RobotsProtocol.Tests
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
 
-    public class Utils
+    public static class Utils
     {
-        [ExcludeFromCodeCoverage]
-        private Utils()
-        {
-        }
-
         public static T GetOnlyItem<T>(IEnumerable<T> items)
         {
             var enumerator = items.GetEnumerator();
