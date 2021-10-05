@@ -74,7 +74,7 @@ namespace Toimik.RobotsProtocol
         private readonly IDictionary<string, RuleGroup> userAgentToRuleGroup = new Dictionary<string, RuleGroup>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Creates an instance of the <see cref="RobotsTxt"/> class.
+        /// Initializes a new instance of the <see cref="RobotsTxt"/> class.
         /// </summary>
         /// <param name="matchTimeout">
         /// <see cref="MatchTimeout"/>
