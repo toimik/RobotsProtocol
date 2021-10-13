@@ -209,14 +209,14 @@ namespace Toimik.RobotsProtocol
             if (index == -1)
             {
                 // e.g. all
-                tag = new Tag(content, userAgent: userAgent);
+                tag = new(content, userAgent: userAgent);
             }
             else
             {
                 // e.g. max-snippet : 100
                 var directive = content.Substring(0, index).TrimEnd();
                 var value = content[(index + 1)..].TrimStart();
-                tag = new Tag(
+                tag = new(
                     directive,
                     value,
                     userAgent);

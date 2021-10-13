@@ -149,7 +149,7 @@ namespace Toimik.RobotsProtocol
             }
             else
             {
-                ruleGroup = new RuleGroup(userAgent);
+                ruleGroup = new(userAgent);
                 userAgentToRuleGroup.Add(userAgent, ruleGroup);
             }
 
@@ -670,7 +670,7 @@ namespace Toimik.RobotsProtocol
             {
                 if (effectedDisallow == string.Empty)
                 {
-                    matchResult = new MatchResult(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                    matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
                 }
                 else
                 {
@@ -679,17 +679,17 @@ namespace Toimik.RobotsProtocol
                     if (allowLength > disallowLength)
                     {
                         // The most specific takes effect
-                        matchResult = new MatchResult(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
                     }
                     else if (allowLength < disallowLength)
                     {
                         // The most specific takes effect
-                        matchResult = new MatchResult(new Directive(isAllowed: false, path: effectedDisallow), userAgent);
+                        matchResult = new(new Directive(isAllowed: false, path: effectedDisallow), userAgent);
                     }
                     else
                     {
                         // The least restrictive takes effect
-                        matchResult = new MatchResult(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
                     }
                 }
             }
@@ -707,7 +707,7 @@ namespace Toimik.RobotsProtocol
             }
             else
             {
-                ruleGroup = new RuleGroup(userAgent);
+                ruleGroup = new(userAgent);
                 userAgentToRuleGroup.Add(userAgent, ruleGroup);
             }
 
