@@ -1,5 +1,5 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/toimik/RobotsProtocol/CI)
-![Code Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nurhafiz/290ef684adc013ef633c637f8f227f57/raw/code-coverage.json)
+![Code Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nurhafiz/c331314aee27fa8f1d49a3870142f8b4/raw/RobotsProtocol-coverage.json)
 
 # Toimik.RobotsProtocol
 

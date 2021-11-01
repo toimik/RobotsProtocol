@@ -38,6 +38,6 @@ jobs:
         label: coverage
         color: brightgreen
         path: tests/Toimik.RobotsProtocol.Tests/coverage.opencover.xml
-        gist-filename: code-coverage.json
-        gist-id: 290ef684adc013ef633c637f8f227f57
+        gist-filename: RobotsProtocol-coverage.json
+        gist-id: c331314aee27fa8f1d49a3870142f8b4
         gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
