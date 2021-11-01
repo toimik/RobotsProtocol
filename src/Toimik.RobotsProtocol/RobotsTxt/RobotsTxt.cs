@@ -175,12 +175,9 @@ namespace Toimik.RobotsProtocol
         public int? GetCrawlDelay(string userAgent)
         {
             userAgent = GetSpecificUserAgent(userAgent);
-            if (userAgent == null)
-            {
-                return null;
-            }
-
-            return userAgentToRuleGroup[userAgent].CrawlDelay;
+            return userAgent == null
+                ? null
+                : userAgentToRuleGroup[userAgent].CrawlDelay;
         }
 
         public IEnumerator<string> GetCustom(string field)
