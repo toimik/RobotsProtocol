@@ -607,7 +607,7 @@ namespace Toimik.RobotsProtocol
 
                 // '$' at the end of a path denotes that the match must match the suffix. Otherwise,
                 // the match must match the head.
-                var isMatchBySuffix = path.EndsWith("$");
+                var isMatchBySuffix = path.EndsWith('$');
 
                 bool isMatch;
                 if (isMatchBySuffix)
@@ -619,7 +619,7 @@ namespace Toimik.RobotsProtocol
                 }
                 else
                 {
-                    var isEndsWithSlash = path.EndsWith("/");
+                    var isEndsWithSlash = path.EndsWith('/');
                     if (isEndsWithSlash)
                     {
                         isMatch = pathWithOptionalQuery.IndexOf(path) != -1;

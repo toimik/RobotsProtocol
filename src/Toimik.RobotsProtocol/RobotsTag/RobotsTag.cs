@@ -153,7 +153,7 @@ namespace Toimik.RobotsProtocol
                 // one. The default user agent is "robots" but specific ones can be anything. There
                 // is also a need to differentiate between a user agent and a directive (that has a
                 // value). This is because both of them use colon as a separator.
-                var tokens = text.Split(",");
+                var tokens = text.Split(',');
                 var firstToken = tokens[0];
                 string userAgent;
                 var colonIndex = firstToken.IndexOf(':');
@@ -175,7 +175,7 @@ namespace Toimik.RobotsProtocol
                     {
                         // e.g. bot: max-snippet: 100
                         userAgent = prefix.ToLower();
-                        tokens = text[(colonIndex + 1)..].Split(",");
+                        tokens = text[(colonIndex + 1)..].Split(',');
                     }
                 }
 
