@@ -101,9 +101,9 @@ namespace Toimik.RobotsProtocol
 
         [ExcludeFromCodeCoverage]
         public static bool IsMatch(
-            string pattern,
-            string pathWithOptionalQuery,
-            double matchTimeout = DefaultMatchTimeoutInSeconds)
+           string pattern,
+           string pathWithOptionalQuery,
+           double matchTimeout = DefaultMatchTimeoutInSeconds)
         {
             bool isMatch;
             try
@@ -573,124 +573,10 @@ namespace Toimik.RobotsProtocol
             }
 
             var ruleGroup = userAgentToRuleGroup[userAgent];
-            var effectedAllow = string.Empty;
-            var effectedDisallow = string.Empty;
-            var directives = ruleGroup.Directives;
-            while (directives.MoveNext())
-            {
-                var directive = directives.Current;
-                bool isAllowed;
-                string path;
-
-                // A directive is null when it is automatically added for User-agent(s) that is/are
-                // defined - usually at the end - without any corresponding directive
-                if (directive == null)
-                {
-                    isAllowed = true;
-                    path = "/";
-                }
-                else
-                {
-                    isAllowed = directive.IsAllowed;
-                    path = directive.Path;
-
-                    // If the path is empty, invert the directive such that 'Disallow: ' becomes
-                    // allow everything and vice versa
-                    if (path == string.Empty)
-                    {
-                        isAllowed = !isAllowed;
-                        path = "/";
-                    }
-                }
-
-                path = EscapePath(path);
-
-                // '$' at the end of a path denotes that the match must match the suffix. Otherwise,
-                // the match must match the head.
-                var isMatchBySuffix = path.EndsWith('$');
-
-                bool isMatch;
-                if (isMatchBySuffix)
-                {
-                    isMatch = IsMatch(
-                        $"{path}$",
-                        pathWithOptionalQuery,
-                        MatchTimeout);
-                }
-                else
-                {
-                    var isEndsWithSlash = path.EndsWith('/');
-                    if (isEndsWithSlash)
-                    {
-                        isMatch = pathWithOptionalQuery.IndexOf(path) != -1;
-                    }
-                    else
-                    {
-                        isMatch = IsMatch(
-                            $"^{path}",
-                            pathWithOptionalQuery,
-                            MatchTimeout);
-                    }
-                }
-
-                if (isMatch)
-                {
-                    path = UnescapePath(path);
-
-                    // The longest path takes precedence because it is the most specific. This
-                    // applies regardless of whether the path consists of a wild card (*).
-                    if (isAllowed)
-                    {
-                        if (path.Length > effectedAllow.Length)
-                        {
-                            effectedAllow = path;
-                        }
-                    }
-                    else
-                    {
-                        if (path.Length > effectedDisallow.Length)
-                        {
-                            effectedDisallow = path;
-                        }
-                    }
-                }
-            }
-
-            MatchResult matchResult;
-            if (effectedAllow == string.Empty)
-            {
-                matchResult = effectedDisallow == string.Empty
-                    ? new MatchResult(new Directive(isAllowed: true, path: "/"))
-                    : new MatchResult(new Directive(isAllowed: false, path: effectedDisallow), userAgent);
-            }
-            else
-            {
-                if (effectedDisallow == string.Empty)
-                {
-                    matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
-                }
-                else
-                {
-                    var allowLength = effectedAllow.Length; ;
-                    var disallowLength = effectedDisallow.Length;
-                    if (allowLength > disallowLength)
-                    {
-                        // The most specific takes effect
-                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
-                    }
-                    else if (allowLength < disallowLength)
-                    {
-                        // The most specific takes effect
-                        matchResult = new(new Directive(isAllowed: false, path: effectedDisallow), userAgent);
-                    }
-                    else
-                    {
-                        // The least restrictive takes effect
-                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
-                    }
-                }
-            }
-
+            var matchResult = ruleGroup.Match(
+                userAgent,
+                pathWithOptionalQuery,
+                MatchTimeout);
             return matchResult;
         }
 
@@ -709,19 +595,6 @@ namespace Toimik.RobotsProtocol
             }
 
             ruleGroup.CrawlDelay = crawlDelay;
-        }
-
-        private static string EscapePath(string path)
-        {
-            // Make the period a literal. This must be done before replacing the wild card below to
-            // prevent the substituted period from getting replaced.
-            path = path.Replace(".", "\\.");
-
-            // '*' (wild card) refers to any character. Prefix it with a period to use in pattern
-            // matching.
-            path = path.Replace("*", ".*");
-
-            return path;
         }
 
         private static string NormalizeSitemap(string sitemap)
@@ -778,13 +651,6 @@ namespace Toimik.RobotsProtocol
             }
 
             return line;
-        }
-
-        private static string UnescapePath(string path)
-        {
-            path = path.Replace("\\.", ".")
-                .Replace(".*", "*");
-            return path;
         }
     }
 }

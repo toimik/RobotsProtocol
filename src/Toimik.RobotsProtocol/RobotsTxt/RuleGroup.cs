@@ -16,8 +16,10 @@
 
 namespace Toimik.RobotsProtocol
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Text;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents the group of rules for a user-agent.
@@ -42,6 +44,123 @@ namespace Toimik.RobotsProtocol
             directives.Add(directive);
         }
 
+        public MatchResult Match(
+            string userAgent,
+            string pathWithOptionalQuery,
+            double matchTimeout)
+        {
+            var effectedAllows = new ConcurrentBag<string>();
+            var effectedDisallows = new ConcurrentBag<string>();
+            Parallel.ForEach(directives, directive =>
+            {
+                bool isAllowed;
+                string path;
+
+                // A directive is null when it is automatically added for User-agent(s) that is/are
+                // defined - usually at the end - without any corresponding directive
+                if (directive == null)
+                {
+                    isAllowed = true;
+                    path = "/";
+                }
+                else
+                {
+                    isAllowed = directive.IsAllowed;
+                    path = directive.Path;
+
+                    // If the path is empty, invert the directive such that 'Disallow: ' becomes
+                    // allow everything and vice versa
+                    if (path == string.Empty)
+                    {
+                        isAllowed = !isAllowed;
+                        path = "/";
+                    }
+                }
+
+                path = EscapePath(path);
+
+                // '$' at the end of a path denotes that the match must match the suffix. Otherwise,
+                // the match must match the head.
+                var isMatchBySuffix = path.EndsWith('$');
+
+                bool isMatch;
+                if (isMatchBySuffix)
+                {
+                    isMatch = RobotsTxt.IsMatch(
+                        $"{path}$",
+                        pathWithOptionalQuery,
+                        matchTimeout);
+                }
+                else
+                {
+                    var isEndsWithSlash = path.EndsWith('/');
+                    if (isEndsWithSlash)
+                    {
+                        isMatch = pathWithOptionalQuery.IndexOf(path) != -1;
+                    }
+                    else
+                    {
+                        isMatch = RobotsTxt.IsMatch(
+                            $"^{path}",
+                            pathWithOptionalQuery,
+                            matchTimeout);
+                    }
+                }
+
+                if (isMatch)
+                {
+                    if (isAllowed)
+                    {
+                        effectedAllows.Add(path);
+                    }
+                    else
+                    {
+                        effectedDisallows.Add(path);
+                    }
+                }
+            });
+
+            var effectedAllow = GetEffectedPath(effectedAllows);
+            var effectedDisallow = GetEffectedPath(effectedDisallows);
+
+            MatchResult matchResult;
+            if (effectedAllow == string.Empty)
+            {
+                matchResult = effectedDisallow == string.Empty
+                    ? new MatchResult(new Directive(isAllowed: true, path: "/"))
+                    : new MatchResult(new Directive(isAllowed: false, path: effectedDisallow), userAgent);
+            }
+            else
+            {
+                if (effectedDisallow == string.Empty)
+                {
+                    matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                }
+                else
+                {
+                    var allowLength = effectedAllow.Length; ;
+                    var disallowLength = effectedDisallow.Length;
+                    if (allowLength > disallowLength)
+                    {
+                        // The most specific takes effect
+                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                    }
+                    else if (allowLength < disallowLength)
+                    {
+                        // The most specific takes effect
+                        matchResult = new(new Directive(isAllowed: false, path: effectedDisallow), userAgent);
+                    }
+                    else
+                    {
+                        // The least restrictive takes effect
+                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                    }
+                }
+            }
+
+            return matchResult;
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder($"User-agent: {UserAgent}")
@@ -60,6 +179,43 @@ namespace Toimik.RobotsProtocol
 
             var text = builder.ToString();
             return text;
+        }
+
+        private static string EscapePath(string path)
+        {
+            // Make the period a literal. This must be done before replacing the wild card below to
+            // prevent the substituted period from getting replaced.
+            path = path.Replace(".", "\\.");
+
+            // '*' (wild card) refers to any character. Prefix it with a period to use in pattern
+            // matching.
+            path = path.Replace("*", ".*");
+
+            return path;
+        }
+
+        private static string GetEffectedPath(ConcurrentBag<string> paths)
+        {
+            var effected = string.Empty;
+            foreach (string path in paths)
+            {
+                // The longest path takes precedence because it is the most specific. This applies
+                // regardless of whether the path consists of a wild card (*).
+                var tempPath = UnescapePath(path);
+                if (tempPath.Length > effected.Length)
+                {
+                    effected = tempPath;
+                }
+            }
+
+            return effected;
+        }
+
+        private static string UnescapePath(string path)
+        {
+            path = path.Replace("\\.", ".")
+                .Replace(".*", "*");
+            return path;
         }
 
         private class DirectiveComparer : IComparer<Directive>
