@@ -44,10 +44,7 @@ namespace Toimik.RobotsProtocol
             directives.Add(directive);
         }
 
-        public MatchResult Match(
-            string userAgent,
-            string pathWithOptionalQuery,
-            double matchTimeout)
+        public MatchResult Match(string pathWithOptionalQuery, double matchTimeout)
         {
             var effectedAllows = new ConcurrentBag<string>();
             var effectedDisallows = new ConcurrentBag<string>();
@@ -128,13 +125,13 @@ namespace Toimik.RobotsProtocol
             {
                 matchResult = effectedDisallow == string.Empty
                     ? new MatchResult(new Directive(isAllowed: true, path: "/"))
-                    : new MatchResult(new Directive(isAllowed: false, path: effectedDisallow), userAgent);
+                    : new MatchResult(new Directive(isAllowed: false, path: effectedDisallow), UserAgent);
             }
             else
             {
                 if (effectedDisallow == string.Empty)
                 {
-                    matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                    matchResult = new(new Directive(isAllowed: true, path: effectedAllow), UserAgent);
                 }
                 else
                 {
@@ -143,17 +140,17 @@ namespace Toimik.RobotsProtocol
                     if (allowLength > disallowLength)
                     {
                         // The most specific takes effect
-                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), UserAgent);
                     }
                     else if (allowLength < disallowLength)
                     {
                         // The most specific takes effect
-                        matchResult = new(new Directive(isAllowed: false, path: effectedDisallow), userAgent);
+                        matchResult = new(new Directive(isAllowed: false, path: effectedDisallow), UserAgent);
                     }
                     else
                     {
                         // The least restrictive takes effect
-                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), userAgent);
+                        matchResult = new(new Directive(isAllowed: true, path: effectedAllow), UserAgent);
                     }
                 }
             }

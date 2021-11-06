@@ -573,10 +573,7 @@ namespace Toimik.RobotsProtocol
             }
 
             var ruleGroup = userAgentToRuleGroup[userAgent];
-            var matchResult = ruleGroup.Match(
-                userAgent,
-                pathWithOptionalQuery,
-                MatchTimeout);
+            var matchResult = ruleGroup.Match(pathWithOptionalQuery, MatchTimeout);
             return matchResult;
         }
 
