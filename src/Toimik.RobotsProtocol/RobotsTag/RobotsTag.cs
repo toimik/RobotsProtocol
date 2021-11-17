@@ -146,7 +146,6 @@ namespace Toimik.RobotsProtocol
                 // e.g. robots: max-snippet: 100
 
                 // e.g. max-snippet: 100, all
-
                 var text = datum.Trim();
 
                 // The prefix of each datum can either have an implicit user agent or an explicit
@@ -203,7 +202,6 @@ namespace Toimik.RobotsProtocol
         private static Tag CreateTag(string userAgent, string content)
         {
             // NOTE: content is in the form of [directive:] value
-
             Tag tag;
             var index = content.IndexOf(':');
             if (index == -1)
