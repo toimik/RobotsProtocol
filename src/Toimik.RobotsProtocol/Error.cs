@@ -20,6 +20,9 @@ namespace Toimik.RobotsProtocol
     /// Represents an error encountered when loading values into <see cref="RobotsTxt"/> or
     /// <see cref="RobotsTag"/>.
     /// </summary>
+    /// <typeparam name="T">
+    /// <see cref="TxtErrorCode"/> or <see cref="TagErrorCode"/>.
+    /// </typeparam>
     public sealed class Error<T>
     {
         public Error(Line line, T code)
