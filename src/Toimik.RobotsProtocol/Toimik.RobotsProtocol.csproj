@@ -21,4 +21,11 @@
     <PackageTags>robots.txt robots-txt robotstxt robots-exclusion-standard robots-exclusion-protocol robots-meta-tag x-robots-tag robots</PackageTags>
     <Product>RobotsProtocol</Product>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>
