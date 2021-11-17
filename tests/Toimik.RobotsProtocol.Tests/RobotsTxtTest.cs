@@ -201,7 +201,7 @@
         {
             var robotsTxt = new RobotsTxt();
 
-            robotsTxt.Load("");
+            robotsTxt.Load(string.Empty);
 
             Assert.Null(robotsTxt.GetCrawlDelay("not found"));
             Assert.False(robotsTxt.GetCustom("not found").MoveNext());
