@@ -53,9 +53,9 @@ namespace Toimik.RobotsProtocol
         /// <param name="directive">
         /// Optional directive that must match <see cref="Tag.Directive"/>.
         /// </param>
-        /// <remarks>
+        /// <returns>
         /// The number of matching <see cref="Tag"/>(s).
-        /// </remarks>
+        /// </returns>
         public int GetTagCount(string userAgent, string directive = null)
         {
             var tags = DoGetTags(userAgent, directive);
@@ -72,10 +72,10 @@ namespace Toimik.RobotsProtocol
         /// <param name="directive">
         /// Optional directive that must match <see cref="Tag.Directive"/>.
         /// </param>
-        /// <remarks>
+        /// <returns>
         /// An enumerator of matching <see cref="Tag"/> in no particular order. This is never
         /// <c>null</c>.
-        /// </remarks>
+        /// </returns>
         public IEnumerator<Tag> GetTags(string userAgent, string directive = null)
         {
             var tags = DoGetTags(userAgent, directive);
