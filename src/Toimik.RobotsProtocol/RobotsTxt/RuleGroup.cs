@@ -135,7 +135,7 @@ namespace Toimik.RobotsProtocol
                 }
                 else
                 {
-                    var allowLength = effectedAllow.Length; ;
+                    var allowLength = effectedAllow.Length;
                     var disallowLength = effectedDisallow.Length;
                     if (allowLength > disallowLength)
                     {
