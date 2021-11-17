@@ -77,7 +77,7 @@ namespace Toimik.RobotsProtocol
         /// Initializes a new instance of the <see cref="RobotsTxt"/> class.
         /// </summary>
         /// <param name="matchTimeout">
-        /// <see cref="MatchTimeout"/>
+        /// Value for <see cref="MatchTimeout"/>.
         /// </param>
         public RobotsTxt(double matchTimeout = DefaultMatchTimeoutInSeconds)
         {
@@ -523,7 +523,7 @@ namespace Toimik.RobotsProtocol
         }
 
         /// <summary>
-        /// Loads, for this instance, the data of a robots.txt from a <see cref="String"/>.
+        /// Loads, for this instance, the data of a robots.txt from a <see cref="string"/>.
         /// </summary>
         /// <param name="data">
         /// Data of a robots.txt.
