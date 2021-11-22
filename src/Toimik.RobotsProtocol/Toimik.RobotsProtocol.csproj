@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Toimik.RobotsProtocol</AssemblyName>
-    <PackageVersion>0.3.2</PackageVersion>
+    <PackageVersion>0.3.3</PackageVersion>
     <Authors>Nurhafiz</Authors>
-    <Version>0.3.2</Version>
+    <Version>0.3.3</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Company>Toimik</Company>
     <Description>
@@ -19,7 +19,7 @@
     <RepositoryUrl>https://github.com/toimik/RobotsProtocol.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>robots.txt robots-txt robotstxt robots-exclusion-standard robots-exclusion-protocol robots-meta-tag x-robots-tag robots</PackageTags>
-    <Product>RobotsProtocol</Product>
+    <Product>Toimik.RobotsProtocol</Product>
   </PropertyGroup>
 
   <ItemGroup>
