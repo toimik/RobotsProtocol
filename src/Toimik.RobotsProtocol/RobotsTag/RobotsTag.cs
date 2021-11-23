@@ -163,7 +163,7 @@ namespace Toimik.RobotsProtocol
                 }
                 else
                 {
-                    var prefix = firstToken.Substring(0, colonIndex).TrimEnd();
+                    var prefix = firstToken[..colonIndex].TrimEnd();
                     var isSpecialWord = specialWords.Contains(prefix);
                     if (isSpecialWord)
                     {
@@ -212,7 +212,7 @@ namespace Toimik.RobotsProtocol
             else
             {
                 // e.g. max-snippet : 100
-                var directive = content.Substring(0, index).TrimEnd();
+                var directive = content[..index].TrimEnd();
                 var value = content[(index + 1)..].TrimStart();
                 tag = new(
                     directive,

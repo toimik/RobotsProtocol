@@ -335,7 +335,7 @@ namespace Toimik.RobotsProtocol
                 var hashIndex = text.IndexOf('#');
 
                 var entry = hashIndex != -1
-                    ? text.Substring(0, hashIndex).TrimEnd()
+                    ? text[..hashIndex].TrimEnd()
                     : text;
                 if (entry == string.Empty)
                 {
@@ -367,7 +367,7 @@ namespace Toimik.RobotsProtocol
                 }
                 else
                 {
-                    var field = entry.Substring(0, colonIndex).Trim();
+                    var field = entry[..colonIndex].Trim();
                     var hasMispelledField = misspelledFields.ContainsKey(field);
                     if (hasMispelledField)
                     {
@@ -620,7 +620,7 @@ namespace Toimik.RobotsProtocol
             }
 
             // URL's path and query are case-sensitive. Other parts are lowercased.
-            var host = sitemap.Substring(0, index).ToLower();
+            var host = sitemap[..index].ToLower();
             sitemap = $"{host}/{path}";
             return sitemap;
         }
@@ -631,7 +631,7 @@ namespace Toimik.RobotsProtocol
             var index = userAgent.IndexOf('/');
             userAgent = index == -1
                 ? userAgent
-                : userAgent.Substring(0, index).TrimEnd();
+                : userAgent[..index].TrimEnd();
             return userAgent.ToLower();
         }
 
