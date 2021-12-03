@@ -302,8 +302,8 @@ namespace Toimik.RobotsProtocol
         {
             public bool Equals(Tag tag, Tag otherTag)
             {
-                var text = ToString(tag);
-                var otherText = ToString(otherTag);
+                var text = tag.ToString();
+                var otherText = otherTag.ToString();
                 var isEquals = text.Equals(otherText, StringComparison.OrdinalIgnoreCase);
                 return isEquals;
             }
@@ -312,17 +312,6 @@ namespace Toimik.RobotsProtocol
             {
                 var hashCode = (tag.UserAgent, tag.Directive, tag.Value).GetHashCode();
                 return hashCode;
-            }
-
-            private static string ToString(Tag tag)
-            {
-                var text = tag.Value == null
-                    ? tag.Directive
-                    : $"{tag.Directive}: {tag.Value}";
-                text = tag.UserAgent.Equals(UserAgentForCatchAll)
-                    ? text
-                    : $"{tag.UserAgent}: {text}";
-                return text;
             }
         }
     }
