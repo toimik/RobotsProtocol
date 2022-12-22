@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 nurhafiz@hotmail.sg
+ * Copyright 2021-2022 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-namespace Toimik.RobotsProtocol
+namespace Toimik.RobotsProtocol;
+
+using System.ComponentModel;
+
+public enum TxtErrorCode
 {
-    using System.ComponentModel;
+    [Description("Missing value.")]
+    MissingValue,
 
-    public enum TxtErrorCode
-    {
-        [Description("Missing value.")]
-        MissingValue,
+    [Description("Path must be empty or start with '/'.")]
+    InvalidPathFormat,
 
-        [Description("Path must be empty or start with '/'.")]
-        InvalidPathFormat,
-
-        [Description("Rule found before any User-agent field.")]
-        RuleFoundBeforeUserAgent,
-    }
+    [Description("Rule found before any User-agent field.")]
+    RuleFoundBeforeUserAgent,
 }

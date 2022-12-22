@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 nurhafiz@hotmail.sg
+ * Copyright 2021-2022 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-namespace Toimik.RobotsProtocol
+namespace Toimik.RobotsProtocol;
+
+/// <summary>
+/// Represents the result of matching robots.txt directives to a URL.
+/// </summary>
+/// <remarks>
+/// If <see cref="UserAgent"/> is <c>null</c>, the match is an implicit allow due to the absence
+/// of any named or catch-all <c>user-agent</c>.
+/// </remarks>
+public readonly struct MatchResult
 {
-    /// <summary>
-    /// Represents the result of matching robots.txt directives to a URL.
-    /// </summary>
-    /// <remarks>
-    /// If <see cref="UserAgent"/> is <c>null</c>, the match is an implicit allow due to the absence
-    /// of any named or catch-all <c>user-agent</c>.
-    /// </remarks>
-    public struct MatchResult
+    public MatchResult(Directive directive, string? userAgent = null)
     {
-        public MatchResult(Directive directive, string userAgent = null)
-        {
-            Directive = directive;
-            UserAgent = userAgent;
-        }
-
-        public Directive Directive { get; }
-
-        public string UserAgent { get; }
+        Directive = directive;
+        UserAgent = userAgent;
     }
+
+    public Directive Directive { get; }
+
+    public string? UserAgent { get; }
 }

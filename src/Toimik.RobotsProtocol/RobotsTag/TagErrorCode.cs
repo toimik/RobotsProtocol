@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 nurhafiz@hotmail.sg
+ * Copyright 2021-2022 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-namespace Toimik.RobotsProtocol
-{
-    using System.ComponentModel;
+namespace Toimik.RobotsProtocol;
 
-    public enum TagErrorCode
-    {
-        [Description("Missing value.")]
-        MissingValue,
-    }
+using System.ComponentModel;
+
+public enum TagErrorCode
+{
+    [Description("Missing value.")]
+    MissingValue,
 }

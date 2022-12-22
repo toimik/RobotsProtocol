@@ -1,10 +1,9 @@
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/toimik/RobotsProtocol/CI)
 ![Code Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/nurhafiz/c331314aee27fa8f1d49a3870142f8b4/raw/RobotsProtocol-coverage.json)
 ![Nuget](https://img.shields.io/nuget/v/Toimik.RobotsProtocol)
 
 # Toimik.RobotsProtocol
 
-.NET 5 C# [robots.txt](https://en.wikipedia.org/wiki/Robots_exclusion_standard) parser and a C# [Robots Meta Tag / X-Robots-Tag](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag) parser.
+.NET 6 C# [robots.txt](https://en.wikipedia.org/wiki/Robots_exclusion_standard) parser and a C# [Robots Meta Tag / X-Robots-Tag](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag) parser.
 
 ## Features
 

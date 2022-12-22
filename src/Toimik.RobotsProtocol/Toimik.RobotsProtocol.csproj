@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
     <AssemblyName>Toimik.RobotsProtocol</AssemblyName>
-    <PackageVersion>0.3.3</PackageVersion>
+    <PackageVersion>0.4.0</PackageVersion>
     <Authors>Nurhafiz</Authors>
-    <Version>0.3.3</Version>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Version>0.4.0</Version>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Company>Toimik</Company>
     <Description>
       Parsers for Robots Exclusion Standard (aka robots.txt), Robots Meta Tag, and X-Robots-Tag.
