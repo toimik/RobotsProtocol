@@ -232,42 +232,30 @@ public sealed class RobotsTag
     {
         var userAgent = tag.UserAgent;
         userAgent ??= string.Empty;
-        var hasUserAgent = userAgentToDirectiveToTags.ContainsKey(userAgent);
-        if (!hasUserAgent)
+        userAgentToDirectiveToTags.TryGetValue(userAgent, out IDictionary<string, ISet<Tag>>? directiveToTags);
+        if (directiveToTags == null)
         {
-            var directiveToTags = new Dictionary<string, ISet<Tag>>(StringComparer.OrdinalIgnoreCase);
+            directiveToTags = new Dictionary<string, ISet<Tag>>(StringComparer.OrdinalIgnoreCase);
             MapTag(directiveToTags, tag);
             userAgentToDirectiveToTags.Add(userAgent, directiveToTags);
         }
         else
         {
-            var directiveToTags = userAgentToDirectiveToTags[userAgent];
-            var directive = tag.Directive;
-            var hasDirective = directiveToTags.ContainsKey(directive);
-            if (!hasDirective)
+            directiveToTags.TryGetValue(tag.Directive, out var tags);
+            if (tags != null)
             {
-                MapTag(directiveToTags, tag);
+                tags.Add(tag);
             }
             else
             {
-                var tags = directiveToTags[directive];
-                tags.Add(tag);
+                MapTag(directiveToTags, tag);
             }
         }
     }
 
     private ISet<Tag> DoGetTags(string userAgent, string? directive)
     {
-        IDictionary<string, ISet<Tag>>? directiveToTags = null;
-        if (userAgent != null)
-        {
-            var hasUserAgent = userAgentToDirectiveToTags.ContainsKey(userAgent);
-            if (hasUserAgent)
-            {
-                directiveToTags = userAgentToDirectiveToTags[userAgent];
-            }
-        }
-
+        userAgentToDirectiveToTags.TryGetValue(userAgent, out IDictionary<string, ISet<Tag>>? directiveToTags);
         ISet<Tag> tags;
         if (directiveToTags == null)
         {
@@ -285,10 +273,8 @@ public sealed class RobotsTag
             }
             else
             {
-                var hasDirective = directiveToTags.ContainsKey(directive);
-                tags = hasDirective
-                    ? directiveToTags[directive]
-                    : new HashSet<Tag>(0);
+                directiveToTags.TryGetValue(directive, out var existingTags);
+                tags = existingTags ?? new HashSet<Tag>(0);
             }
         }
 

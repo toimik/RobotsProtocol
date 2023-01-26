@@ -109,13 +109,8 @@ public sealed class RobotsTxt
 
     public void AddCustom(string field, string value)
     {
-        ISet<string> values;
-        var hasKey = customFieldToValues.ContainsKey(field);
-        if (hasKey)
-        {
-            values = customFieldToValues[field];
-        }
-        else
+        customFieldToValues.TryGetValue(field, out ISet<string>? values);
+        if (values == null)
         {
             values = new HashSet<string>();
             customFieldToValues.Add(field, values);
@@ -126,13 +121,8 @@ public sealed class RobotsTxt
 
     public void AddDirective(string userAgent, Directive? directive)
     {
-        RuleGroup ruleGroup;
-        var hasUserAgent = userAgentToRuleGroup.ContainsKey(userAgent);
-        if (hasUserAgent)
-        {
-            ruleGroup = userAgentToRuleGroup[userAgent];
-        }
-        else
+        userAgentToRuleGroup.TryGetValue(userAgent, out RuleGroup? ruleGroup);
+        if (ruleGroup == null)
         {
             ruleGroup = new(userAgent);
             userAgentToRuleGroup.Add(userAgent, ruleGroup);
@@ -167,19 +157,17 @@ public sealed class RobotsTxt
 
     public IEnumerator<string> GetCustom(string field)
     {
-        var hasField = customFieldToValues.ContainsKey(field);
-        var values = hasField
-            ? customFieldToValues[field]
-            : new HashSet<string>(0);
+        customFieldToValues.TryGetValue(field, out ISet<string>? values);
+        values ??= new HashSet<string>(0);
         return values.GetEnumerator();
     }
 
     public int GetCustomCount(string field)
     {
-        var hasField = customFieldToValues.ContainsKey(field);
-        var count = hasField
-            ? customFieldToValues[field].Count
-            : 0;
+        customFieldToValues.TryGetValue(field, out ISet<string>? values);
+        var count = values == null
+            ? 0
+            : values.Count;
         return count;
     }
 
@@ -360,10 +348,10 @@ public sealed class RobotsTxt
             else
             {
                 var field = entry[..colonIndex].Trim();
-                var hasMispelledField = misspelledFields.ContainsKey(field);
-                if (hasMispelledField)
+                var hasMispelledField = misspelledFields.TryGetValue(field, out string? misspelledField);
+                if (misspelledField != null)
                 {
-                    field = misspelledFields[field];
+                    field = misspelledField;
                 }
 
                 field = field.ToLower();
@@ -574,13 +562,8 @@ public sealed class RobotsTxt
 
     public void SetCrawlDelay(string userAgent, int crawlDelay)
     {
-        RuleGroup ruleGroup;
-        var hasUserAgent = userAgentToRuleGroup.ContainsKey(userAgent);
-        if (hasUserAgent)
-        {
-            ruleGroup = userAgentToRuleGroup[userAgent];
-        }
-        else
+        userAgentToRuleGroup.TryGetValue(userAgent, out RuleGroup? ruleGroup);
+        if (ruleGroup == null)
         {
             ruleGroup = new(userAgent);
             userAgentToRuleGroup.Add(userAgent, ruleGroup);
