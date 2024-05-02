@@ -3,7 +3,7 @@
 
 # Toimik.RobotsProtocol
 
-.NET 6 C# [robots.txt](https://en.wikipedia.org/wiki/Robots_exclusion_standard) parser and a C# [Robots Meta Tag / X-Robots-Tag](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag) parser.
+.NET 8 C# [robots.txt](https://en.wikipedia.org/wiki/Robots_exclusion_standard) parser and a C# [Robots Meta Tag / X-Robots-Tag](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag) parser.
 
 ## Features
 

@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <AssemblyName>Toimik.RobotsProtocol</AssemblyName>
-    <PackageVersion>0.4.1</PackageVersion>
+    <PackageVersion>0.5.0</PackageVersion>
     <Authors>Nurhafiz</Authors>
-    <Version>0.4.1</Version>
+    <Version>0.5.0</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Company>Toimik</Company>
     <Description>
