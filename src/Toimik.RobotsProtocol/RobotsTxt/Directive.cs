@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2022 nurhafiz@hotmail.sg
+ * Copyright 2021-2024 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,16 @@
 namespace Toimik.RobotsProtocol;
 
 /// <summary>
-/// Represents a directive ( <c>Disallow: &lt;path&gt;</c> or <c>Allow: &lt;path&gt;</c>) in a
-/// robots.txt.
+/// Represents a directive ( <c>Disallow: &lt;path&gt;</c> or <c>Allow: &lt;path&gt;</c>) in a robots.txt.
 /// </summary>
 /// <remarks>
-/// According to Google's specs, only the <c>allow</c> and <c>disallow</c> fields are called
-/// directives.
+/// According to Google's specs, only the <c>allow</c> and <c>disallow</c> fields are called directives.
 /// </remarks>
-public sealed class Directive
+public sealed class Directive(bool isAllowed, string path)
 {
-    public Directive(bool isAllowed, string path)
-    {
-        IsAllowed = isAllowed;
-        Path = path;
-    }
+    public bool IsAllowed { get; } = isAllowed;
 
-    public bool IsAllowed { get; }
-
-    public string Path { get; }
+    public string Path { get; } = path;
 
     public override string ToString()
     {

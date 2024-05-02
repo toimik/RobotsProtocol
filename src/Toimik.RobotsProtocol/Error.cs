@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2022 nurhafiz@hotmail.sg
+ * Copyright 2021-2024 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,23 +17,14 @@
 namespace Toimik.RobotsProtocol;
 
 /// <summary>
-/// Represents an error encountered when loading values into <see cref="RobotsTxt"/> or
-/// <see cref="RobotsTag"/>.
+/// Represents an error encountered when loading values into <see cref="RobotsTxt"/> or <see cref="RobotsTag"/>.
 /// </summary>
-/// <typeparam name="T">
-/// <see cref="TxtErrorCode"/> or <see cref="TagErrorCode"/>.
-/// </typeparam>
-public sealed class Error<T>
+/// <typeparam name="T"><see cref="TxtErrorCode"/> or <see cref="TagErrorCode"/>.</typeparam>
+public sealed class Error<T>(Line line, T code)
 {
-    public Error(Line line, T code)
-    {
-        Line = line;
-        Code = code;
-    }
+    public T Code { get; } = code;
 
-    public T Code { get; }
-
-    public Line Line { get; }
+    public Line Line { get; } = line;
 
     public override string ToString()
     {

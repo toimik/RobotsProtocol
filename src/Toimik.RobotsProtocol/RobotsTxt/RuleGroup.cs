@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2022 nurhafiz@hotmail.sg
+ * Copyright 2021-2024 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,20 +23,15 @@ using System.Text;
 /// <summary>
 /// Represents the group of rules for a user-agent.
 /// </summary>
-public sealed class RuleGroup
+public sealed class RuleGroup(string userAgent)
 {
     private readonly ISet<Directive?> directives = new SortedSet<Directive?>(new DirectiveComparer());
-
-    public RuleGroup(string userAgent)
-    {
-        UserAgent = userAgent;
-    }
 
     public int? CrawlDelay { get; set; }
 
     public IEnumerator<Directive?> Directives => directives.GetEnumerator();
 
-    public string UserAgent { get; }
+    public string UserAgent { get; } = userAgent;
 
     public void AddDirective(Directive? directive)
     {
@@ -64,8 +59,8 @@ public sealed class RuleGroup
                 isAllowed = directive.IsAllowed;
                 path = directive.Path;
 
-                // If the path is empty, invert the directive such that 'Disallow: ' becomes
-                // allow everything and vice versa
+                // If the path is empty, invert the directive such that 'Disallow: ' becomes allow
+                // everything and vice versa
                 if (path == string.Empty)
                 {
                     isAllowed = !isAllowed;
@@ -75,8 +70,8 @@ public sealed class RuleGroup
 
             path = EscapePath(path);
 
-            // '$' at the end of a path denotes that the match must match the suffix. Otherwise,
-            // the match must match the head.
+            // '$' at the end of a path denotes that the match must match the suffix. Otherwise, the
+            // match must match the head.
             var isMatchBySuffix = path.EndsWith('$');
 
             bool isMatch;
@@ -183,8 +178,7 @@ public sealed class RuleGroup
         // prevent the substituted period from getting replaced.
         path = path.Replace(".", "\\.");
 
-        // '*' (wild card) refers to any character. Prefix it with a period to use in pattern
-        // matching.
+        // '*' (wild card) refers to any character. Prefix it with a period to use in pattern matching.
         path = path.Replace("*", ".*");
 
         return path;

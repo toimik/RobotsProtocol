@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2022 nurhafiz@hotmail.sg
+ * Copyright 2021-2024 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,11 @@ namespace Toimik.RobotsProtocol;
 /// <summary>
 /// Represents a line in a robots.txt or a list of HTTP Meta tags / X-Robots-Tag values.
 /// </summary>
-public sealed class Line
+public sealed class Line(int number, string text)
 {
-    public Line(int number, string text)
-    {
-        Number = number;
-        Text = text;
-    }
+    public int Number { get; } = number;
 
-    public int Number { get; }
-
-    public string Text { get; }
+    public string Text { get; } = text;
 
     public override string ToString()
     {
