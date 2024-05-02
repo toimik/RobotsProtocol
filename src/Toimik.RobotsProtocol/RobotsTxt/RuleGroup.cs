@@ -87,7 +87,7 @@ public sealed class RuleGroup(string userAgent)
                 var isEndsWithSlash = path.EndsWith('/');
                 if (isEndsWithSlash)
                 {
-                    isMatch = pathWithOptionalQuery.IndexOf(path) != -1;
+                    isMatch = pathWithOptionalQuery.Contains(path, System.StringComparison.CurrentCulture);
                 }
                 else
                 {
