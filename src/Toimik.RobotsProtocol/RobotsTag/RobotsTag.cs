@@ -25,8 +25,8 @@ using System.Collections.Generic;
 /// <remarks>
 /// Use this to load and query values of Robots Meta Tags and X-Robots-Tag HTTP headers.
 /// <para>
-/// Unlike robots.txt, there is no standard directives to adhere to. As such, no convenience
-/// methods are provided for direct access to the respective values.
+/// Unlike robots.txt, there is no standard directives to adhere to. As such, no convenience methods
+/// are provided for direct access to the respective values.
 /// </para>
 /// <para>
 /// <em>NB: If enabled, the user agent parameter passed to methods falls back directly to
@@ -37,25 +37,19 @@ public sealed class RobotsTag
 {
     public const string UserAgentForCatchAll = "robots";
 
-    private readonly IDictionary<string, IDictionary<string, ISet<Tag>>> userAgentToDirectiveToTags = new Dictionary<string, IDictionary<string, ISet<Tag>>>(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, IDictionary<string, ISet<Tag>>> userAgentToDirectiveToTags = new Dictionary<string, IDictionary<string, ISet<Tag>>>(StringComparer.OrdinalIgnoreCase);
 
     public RobotsTag()
     {
     }
 
     /// <summary>
-    /// Gets, for this instance, the number of <see cref="Tag"/>(s) whose respective values
-    /// match the specified directive and user agent.
+    /// Gets, for this instance, the number of <see cref="Tag"/>(s) whose respective values match
+    /// the specified directive and user agent.
     /// </summary>
-    /// <param name="userAgent">
-    /// User agent that must match <see cref="Tag.UserAgent"/>.
-    /// </param>
-    /// <param name="directive">
-    /// Optional directive that must match <see cref="Tag.Directive"/>.
-    /// </param>
-    /// <returns>
-    /// The number of matching <see cref="Tag"/>(s).
-    /// </returns>
+    /// <param name="userAgent">User agent that must match <see cref="Tag.UserAgent"/>.</param>
+    /// <param name="directive">Optional directive that must match <see cref="Tag.Directive"/>.</param>
+    /// <returns>The number of matching <see cref="Tag"/>(s).</returns>
     public int GetTagCount(string userAgent, string? directive = null)
     {
         var tags = DoGetTags(userAgent, directive);
@@ -63,18 +57,13 @@ public sealed class RobotsTag
     }
 
     /// <summary>
-    /// Gets, for this instance, every <see cref="Tag"/> whose respective values match the
-    /// specified directive and user agent.
+    /// Gets, for this instance, every <see cref="Tag"/> whose respective values match the specified
+    /// directive and user agent.
     /// </summary>
-    /// <param name="userAgent">
-    /// User agent that must match <see cref="Tag.UserAgent"/>.
-    /// </param>
-    /// <param name="directive">
-    /// Optional directive that must match <see cref="Tag.Directive"/>.
-    /// </param>
+    /// <param name="userAgent">User agent that must match <see cref="Tag.UserAgent"/>.</param>
+    /// <param name="directive">Optional directive that must match <see cref="Tag.Directive"/>.</param>
     /// <returns>
-    /// An enumerator of matching <see cref="Tag"/> in no particular order. This is never
-    /// <c>null</c>.
+    /// An enumerator of matching <see cref="Tag"/> in no particular order. This is never <c>null</c>.
     /// </returns>
     public IEnumerator<Tag> GetTags(string userAgent, string? directive = null)
     {
@@ -86,15 +75,9 @@ public sealed class RobotsTag
     /// Determines, for this instance, whether there is any <see cref="Tag"/> whose respective
     /// values match the specified directive and user agent.
     /// </summary>
-    /// <param name="userAgent">
-    /// User agent that must match <see cref="Tag.UserAgent"/>.
-    /// </param>
-    /// <param name="directive">
-    /// Optional directive that must match <see cref="Tag.Directive"/>.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if there is any matching <see cref="Tag"/>; <c>false</c> otherwise.
-    /// </returns>
+    /// <param name="userAgent">User agent that must match <see cref="Tag.UserAgent"/>.</param>
+    /// <param name="directive">Optional directive that must match <see cref="Tag.Directive"/>.</param>
+    /// <returns><c>true</c> if there is any matching <see cref="Tag"/>; <c>false</c> otherwise.</returns>
     public bool HasTag(string userAgent, string? directive = null)
     {
         var tags = GetTags(userAgent, directive);
@@ -107,21 +90,17 @@ public sealed class RobotsTag
     /// </summary>
     /// <param name="data">
     /// Every line, each in the form of
-    /// <c>[user-agent:]directive[:value][,directive[:value]][,...]</c> where bracketed fields
-    /// are optional.
+    /// <c>[user-agent:]directive[:value][,directive[:value]][,...]</c> where bracketed fields are optional.
     /// </param>
     /// <param name="specialWords">
-    /// Optional set of case-insensitive words treated as the name of directives with values
-    /// (e.g. max-snippet is the name of this valued directive: <em>max-snippet: 10</em>).
+    /// Optional set of case-insensitive words treated as the name of directives with values (e.g.
+    /// max-snippet is the name of this valued directive: <em>max-snippet: 10</em>).
     /// <para>
-    /// All directives in the form of <c>directive: value</c> appearing as the prefix of a datum
-    /// are treated as the name of a targeted user agent unless the directive is specified in
-    /// this set.
+    /// All directives in the form of <c>directive: value</c> appearing as the prefix of a datum are
+    /// treated as the name of a targeted user agent unless the directive is specified in this set.
     /// </para>
     /// </param>
-    /// <returns>
-    /// Every <see cref="Error{TagErrorCode}"/>, if any.
-    /// </returns>
+    /// <returns>Every <see cref="Error{TagErrorCode}"/>, if any.</returns>
     /// <remarks>
     /// All existing entries, if any, are cleared when this method is called.
     /// <para>
@@ -144,10 +123,10 @@ public sealed class RobotsTag
             // e.g. max-snippet: 100, all
             var text = datum.Trim();
 
-            // The prefix of each datum can either have an implicit user agent or an explicit
-            // one. The default user agent is "robots" but specific ones can be anything. There
-            // is also a need to differentiate between a user agent and a directive (that has a
-            // value). This is because both of them use colon as a separator.
+            // The prefix of each datum can either have an implicit user agent or an explicit one.
+            // The default user agent is "robots" but specific ones can be anything. There is also a
+            // need to differentiate between a user agent and a directive (that has a value). This
+            // is because both of them use colon as a separator.
             var tokens = text.Split(',');
             var firstToken = tokens[0];
             string userAgent;

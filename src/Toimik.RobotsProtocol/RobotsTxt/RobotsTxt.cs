@@ -28,9 +28,9 @@ using System.Threading.Tasks;
 /// Represents a robots.txt.
 /// </summary>
 /// <remarks>
-/// By default, values of the following case-insensitive fields are parsed by
-/// <see cref="Load(string, bool, ISet{string}, IDictionary{string, string})"/> and
-/// <see cref="Load(Stream, bool, ISet{string}, IDictionary{string, string})"/>:
+/// By default, values of the following case-insensitive fields are parsed by <see
+/// cref="Load(string, bool, ISet{string}, IDictionary{string, string})"/> and <see
+/// cref="Load(Stream, bool, ISet{string}, IDictionary{string, string})"/>:
 /// <list type="bullet">
 /// <item>
 /// <description>User-agent</description>
@@ -49,12 +49,12 @@ using System.Threading.Tasks;
 /// </item>
 /// </list>
 /// <para>
-/// Value(s) of custom field(s) (e.g: <c>Host</c>) can be extracted by specifying their name to
-/// the corresponding parameter.
+/// Value(s) of custom field(s) (e.g: <c>Host</c>) can be extracted by specifying their name to the
+/// corresponding parameter.
 /// </para>
 /// <para>
-/// <see cref="IsAllowed(string, string)"/> and <see cref="Match(string, string)"/> interpret
-/// this instance according to Google's Robots Exclusion Protocol Specification
+/// <see cref="IsAllowed(string, string)"/> and <see cref="Match(string, string)"/> interpret this
+/// instance according to Google's Robots Exclusion Protocol Specification
 /// - which Google has submitted to be recognized as an official standard - but with additional
 /// support for <c>Crawl-delay</c> directive.
 /// </para>
@@ -67,11 +67,11 @@ public sealed class RobotsTxt
 
     private const string UserAgentForCatchAll = "*";
 
-    private readonly IDictionary<string, ISet<string>> customFieldToValues = new Dictionary<string, ISet<string>>(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, ISet<string>> customFieldToValues = new Dictionary<string, ISet<string>>(StringComparer.OrdinalIgnoreCase);
 
     private readonly ISet<string> sitemaps = new HashSet<string>();
 
-    private readonly IDictionary<string, RuleGroup> userAgentToRuleGroup = new Dictionary<string, RuleGroup>(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, RuleGroup> userAgentToRuleGroup = new Dictionary<string, RuleGroup>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RobotsTxt"/> class.
@@ -135,8 +135,8 @@ public sealed class RobotsTxt
     /// Adds a sitemap to this instance.
     /// </summary>
     /// <param name="sitemap">
-    /// An absolute URL to a sitemap. The URL must include a filename because without it, the
-    /// URL is pointing to the home page of a web site. Invalid values are ignored.
+    /// An absolute URL to a sitemap. The URL must include a filename because without it, the URL is
+    /// pointing to the home page of a web site. Invalid values are ignored.
     /// </param>
     public void AddSitemap(string sitemap)
     {
@@ -184,12 +184,9 @@ public sealed class RobotsTxt
     }
 
     /// <summary>
-    /// Gets, for this instance, the most specific <c>User-agent</c> that matches the specified
-    /// user agent.
+    /// Gets, for this instance, the most specific <c>User-agent</c> that matches the specified user agent.
     /// </summary>
-    /// <param name="userAgent">
-    /// A user agent to match against.
-    /// </param>
+    /// <param name="userAgent">A user agent to match against.</param>
     /// <returns>
     /// <c>null</c> (if no match) or a case-insensitive <c>User-agent</c> that is:
     /// <list type="bullet">
@@ -211,13 +208,12 @@ public sealed class RobotsTxt
         var agent = userAgent;
         var hasUserAgent = userAgentToRuleGroup.ContainsKey(agent);
 
-        // If an exact case-insensitive match is not found, try to find one that uses a wild
-        // card (e.g. bot*)
+        // If an exact case-insensitive match is not found, try to find one that uses a wild card
+        // (e.g. bot*)
         if (!hasUserAgent)
         {
-            // For every failed attempt, remove the last character of the name and suffix the
-            // name with an asterisk. Repeat until the name becomes '*', which is the catch-all
-            // token.
+            // For every failed attempt, remove the last character of the name and suffix the name
+            // with an asterisk. Repeat until the name becomes '*', which is the catch-all token.
             string tempName = agent;
             while (!userAgentToRuleGroup.ContainsKey(agent))
             {
@@ -254,30 +250,27 @@ public sealed class RobotsTxt
     /// A stream containing the data of a robots.txt. This is left opened after processing.
     /// </param>
     /// <param name="isAllowDirectiveIgnored">
-    /// Optional indication of whether the <c>Allow</c> directive is ignored. (This option is
-    /// made available because the directive is not a standard.) The default is <c>false</c>.
+    /// Optional indication of whether the <c>Allow</c> directive is ignored. (This option is made
+    /// available because the directive is not a standard.) The default is <c>false</c>.
     /// </param>
     /// <param name="customFields">
-    /// Optional set of <b>case-insensitive</b> fields whose value(s) must be extracted. The
-    /// values are left as-is but with leading and trailing spaces removed.
+    /// Optional set of <b>case-insensitive</b> fields whose value(s) must be extracted. The values
+    /// are left as-is but with leading and trailing spaces removed.
     /// </param>
     /// <param name="misspelledFields">
-    /// Optional mapping of <b>case-insensitive</b> misspelled fields to their corresponding
-    /// field. This is useful if leniency is required. e.g. A misspelled <c>dissalow</c> is
-    /// mapped to <c>disallow</c>.
+    /// Optional mapping of <b>case-insensitive</b> misspelled fields to their corresponding field.
+    /// This is useful if leniency is required. e.g. A misspelled <c>dissalow</c> is mapped to <c>disallow</c>.
     /// </param>
     /// <returns>
-    /// A <see cref="Task"/> containing every <see cref="Error"/>, if any, found when parsing
-    /// the data. This is never <c>null</c>.
+    /// A <see cref="Task"/> containing every <see cref="Error"/>, if any, found when parsing the
+    /// data. This is never <c>null</c>.
     /// </returns>
     /// <exception cref="ObjectDisposedException">
     /// Thrown when <paramref name="stream"/> is manually closed.
     /// </exception>
     /// <remarks>
     /// All existing entries, if any, are cleared when this method is called.
-    /// <para>
-    /// Call <see cref="Stream.Close()"/> on <paramref name="stream"/> to cancel loading.
-    /// </para>
+    /// <para>Call <see cref="Stream.Close()"/> on <paramref name="stream"/> to cancel loading.</para>
     /// </remarks>
     public async Task<IEnumerable<Error<TxtErrorCode>>> Load(
         Stream stream,
@@ -291,8 +284,8 @@ public sealed class RobotsTxt
 
         using var reader = new StreamReader(stream, leaveOpen: true);
 
-        // This is done outside of the loop below so that the line numbering starts from the
-        // first non-empty line
+        // This is done outside of the loop below so that the line numbering starts from the first
+        // non-empty line
         var text = await ReadUntilNonEmptyLine(reader).ConfigureAwait(false);
         if (text == null)
         {
@@ -325,15 +318,14 @@ public sealed class RobotsTxt
 
             var line = new Line(lineNumber, text);
 
-            // ':' delimits a field and its value. A pair must exist in a non-empty line. Since
-            // all non-comment lines are in the form of 'field: value', a missing colon implies
-            // that a value is unintentionally left out.
+            // ':' delimits a field and its value. A pair must exist in a non-empty line. Since all
+            // non-comment lines are in the form of 'field: value', a missing colon implies that a
+            // value is unintentionally left out.
             var colonIndex = entry.IndexOf(':');
             if (colonIndex == -1)
             {
                 // Although an empty value for a directive is allowed, it does not make sense to
-                // record an error if the allow directive is ignored. Hence, the line is
-                // skipped.
+                // record an error if the allow directive is ignored. Hence, the line is skipped.
                 var isAllowDirective = entry.Equals("allow", StringComparison.OrdinalIgnoreCase);
                 if (isAllowDirective
                     && isAllowDirectiveIgnored)
@@ -409,8 +401,7 @@ public sealed class RobotsTxt
                             }
                             else
                             {
-                                // Since there may be more than one, the last valid value takes
-                                // effect
+                                // Since there may be more than one, the last valid value takes effect
                                 try
                                 {
                                     var number = int.Parse(value);
@@ -487,10 +478,10 @@ public sealed class RobotsTxt
             return new LinkedList<Error<TxtErrorCode>>();
         }
 
-        // User-agent(s) may be found at the end of a robots.txt without any corresponding
-        // directive defined for them. That is equivalent to not defining those user-agent(s) in
-        // the first place. However, they are still added - but with an empty directive - for
-        // the sake of keeping the original data intact.
+        // User-agent(s) may be found at the end of a robots.txt without any corresponding directive
+        // defined for them. That is equivalent to not defining those user-agent(s) in the first
+        // place. However, they are still added - but with an empty directive - for the sake of
+        // keeping the original data intact.
         if (!hasEncounteredDirective)
         {
             foreach (string userAgent in userAgents)
@@ -505,29 +496,23 @@ public sealed class RobotsTxt
     /// <summary>
     /// Loads, for this instance, the data of a robots.txt from a <see cref="string"/>.
     /// </summary>
-    /// <param name="data">
-    /// Data of a robots.txt.
-    /// </param>
+    /// <param name="data">Data of a robots.txt.</param>
     /// <param name="isAllowDirectiveIgnored">
-    /// Optional indication of whether the <c>Allow</c> directive is ignored. (This option is
-    /// made available because the directive is not a standard.) The default is <c>false</c>.
+    /// Optional indication of whether the <c>Allow</c> directive is ignored. (This option is made
+    /// available because the directive is not a standard.) The default is <c>false</c>.
     /// </param>
     /// <param name="customFields">
-    /// Optional set of <b>case-insensitive</b> fields whose value(s) must be extracted. The
-    /// values are left as-is but with leading and trailing spaces removed.
+    /// Optional set of <b>case-insensitive</b> fields whose value(s) must be extracted. The values
+    /// are left as-is but with leading and trailing spaces removed.
     /// </param>
     /// <param name="misspelledFields">
-    /// Optional mapping of <b>case-insensitive</b> misspelled fields to their corresponding
-    /// field. This is useful if leniency is required. e.g. A misspelled <c>dissalow</c> is
-    /// mapped to <c>disallow</c>.
+    /// Optional mapping of <b>case-insensitive</b> misspelled fields to their corresponding field.
+    /// This is useful if leniency is required. e.g. A misspelled <c>dissalow</c> is mapped to <c>disallow</c>.
     /// </param>
     /// <returns>
-    /// Every <see cref="Error"/>, if any, found when parsing the data. This is never
-    /// <c>null</c>.
+    /// Every <see cref="Error"/>, if any, found when parsing the data. This is never <c>null</c>.
     /// </returns>
-    /// <remarks>
-    /// All existing entries, if any, are cleared when this method is called.
-    /// </remarks>
+    /// <remarks>All existing entries, if any, are cleared when this method is called.</remarks>
     public IEnumerable<Error<TxtErrorCode>> Load(
         string data,
         bool isAllowDirectiveIgnored = false,
@@ -591,9 +576,9 @@ public sealed class RobotsTxt
         var path = sitemap[(index + 1)..];
         if (path == string.Empty)
         {
-            // Sitemap's filename can be of any length. It can even point to the root itself in
-            // case there are websites that organize their contents into different directories
-            // without putting any content at the homepage.
+            // Sitemap's filename can be of any length. It can even point to the root itself in case
+            // there are websites that organize their contents into different directories without
+            // putting any content at the homepage.
             return null;
         }
 
