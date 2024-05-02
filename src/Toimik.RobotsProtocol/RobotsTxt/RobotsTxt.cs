@@ -67,11 +67,11 @@ public sealed class RobotsTxt
 
     private const string UserAgentForCatchAll = "*";
 
-    private readonly Dictionary<string, ISet<string>> customFieldToValues = new Dictionary<string, ISet<string>>(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, ISet<string>> customFieldToValues = new(StringComparer.OrdinalIgnoreCase);
 
     private readonly ISet<string> sitemaps = new HashSet<string>();
 
-    private readonly Dictionary<string, RuleGroup> userAgentToRuleGroup = new Dictionary<string, RuleGroup>(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, RuleGroup> userAgentToRuleGroup = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RobotsTxt"/> class.

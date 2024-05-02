@@ -37,7 +37,7 @@ public sealed class RobotsTag
 {
     public const string UserAgentForCatchAll = "robots";
 
-    private readonly Dictionary<string, IDictionary<string, ISet<Tag>>> userAgentToDirectiveToTags = new Dictionary<string, IDictionary<string, ISet<Tag>>>(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, IDictionary<string, ISet<Tag>>> userAgentToDirectiveToTags = new(StringComparer.OrdinalIgnoreCase);
 
     public RobotsTag()
     {
