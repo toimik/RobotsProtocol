@@ -147,10 +147,10 @@ public class RobotsTagTest
         };
         robotsTag.Load(data);
         const string UserAgent2 = "otherbot";
-        data = new List<string>
-        {
+        data =
+        [
             $"{UserAgent2}: none",
-        };
+        ];
         robotsTag.Load(data);
 
         Assert.Equal(0, robotsTag.GetTagCount(UserAgent1));
