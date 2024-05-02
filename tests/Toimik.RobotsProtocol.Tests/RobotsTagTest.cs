@@ -73,7 +73,7 @@ public class RobotsTagTest
     public void GetTagCount(
          string datum,
          string userAgent,
-         string directive,
+         string? directive,
          int tagCount)
     {
         var robotsTag = new RobotsTag();
@@ -118,7 +118,7 @@ public class RobotsTagTest
     public void HasTag(
         string datum,
         string userAgent,
-        string directive,
+        string? directive,
         bool flag)
     {
         var robotsTag = new RobotsTag();

@@ -11,8 +11,8 @@ public class TagTest
     [InlineData("max-snippet", "100", "bot", "bot: max-snippet: 100")]
     public void InstantiateWithNullUserAgent(
         string directive,
-        string value,
-        string userAgent,
+        string? value,
+        string? userAgent,
         string expectedText)
     {
         var tag = new Tag(
