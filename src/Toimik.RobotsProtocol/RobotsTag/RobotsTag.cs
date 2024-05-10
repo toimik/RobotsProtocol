@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2022 nurhafiz@hotmail.sg
+ * Copyright 2021-2024 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,8 +81,8 @@ public sealed class RobotsTag
     public bool HasTag(string userAgent, string? directive = null)
     {
         var tags = GetTags(userAgent, directive);
-        var hasDirecitve = tags.MoveNext();
-        return hasDirecitve;
+        var hasDirective = tags.MoveNext();
+        return hasDirective;
     }
 
     /// <summary>
