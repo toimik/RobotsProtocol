@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2022 nurhafiz@hotmail.sg
+ * Copyright 2021-2026 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -223,7 +223,7 @@ public sealed class RobotsTxt
                     break;
                 }
 
-                tempName = tempName.Remove(tempName.Length - 1);
+                tempName = tempName[..^1];
                 agent = $"{tempName}*";
             }
         }

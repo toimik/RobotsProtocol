@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2024 nurhafiz@hotmail.sg
+ * Copyright 2021-2026 nurhafiz@hotmail.sg
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 namespace Toimik.RobotsProtocol;
 
-/// <summary>
-/// Represents the result of matching robots.txt directives to a URL.
-/// </summary>
-/// <remarks>
-/// If <see cref="UserAgent"/> is <c>null</c>, the match is an implicit allow due to the absence of
-/// any named or catch-all <c>user-agent</c>.
-/// </remarks>
-public readonly struct MatchResult(Directive directive, string? userAgent = null)
-{
-    public Directive Directive { get; } = directive;
+using System.ComponentModel;
 
-    public string? UserAgent { get; } = userAgent;
+public enum TxtErrorCode
+{
+    [Description("Missing value.")]
+    MissingValue,
+
+    [Description("Path must be empty or start with '/'.")]
+    InvalidPathFormat,
+
+    [Description("Rule found before any User-agent field.")]
+    RuleFoundBeforeUserAgent,
 }

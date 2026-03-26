@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using Toimik.RobotsProtocol;
 using Xunit;
 
 public class RobotsTagTest
