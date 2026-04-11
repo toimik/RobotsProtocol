@@ -244,7 +244,7 @@ public sealed class RobotsTag
         {
             if (directive == null)
             {
-                tags = new HashSet<Tag>();
+                tags = new HashSet<Tag>(new TagComparer());
                 foreach (ISet<Tag> tempTags in directiveToTags.Values)
                 {
                     tags.UnionWith(tempTags);

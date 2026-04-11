@@ -19,6 +19,7 @@ namespace Toimik.RobotsProtocol;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 /// <summary>
 /// Represents the group of rules for a user-agent.
@@ -68,47 +69,58 @@ public sealed class RuleGroup(string userAgent)
                 }
             }
 
-            path = EscapePath(path);
+                // If the original path ends with a '$', it denotes suffix matching. Detect and
+                // remove it before escaping so we avoid introducing duplicate '$' characters in
+                // the resulting regex.
+                var isSuffixMatch = path.EndsWith('$');
+                if (isSuffixMatch)
+                {
+                    path = path[..^1];
+                }
 
-            // '$' at the end of a path denotes that the match must match the suffix. Otherwise, the
-            // match must match the head.
-            var isMatchBySuffix = path.EndsWith('$');
-
-            bool isMatch;
-            if (isMatchBySuffix)
-            {
-                isMatch = RobotsTxt.IsMatch(
-                    $"{path}$",
-                    pathWithOptionalQuery,
-                    matchTimeout);
-            }
-            else
-            {
+                // Determine whether the original path ends with a slash. For folder-style
+                // directives (ending with '/'), perform a prefix match against the request
+                // path rather than searching for the escaped pattern anywhere within it. This
+                // avoids accidental matches of the folder segment occurring later in the path
+                // (e.g. '/animals/fish/' should not match '/fish/').
                 var isEndsWithSlash = path.EndsWith('/');
-                if (isEndsWithSlash)
-                {
-                    isMatch = pathWithOptionalQuery.Contains(path, System.StringComparison.CurrentCulture);
-                }
-                else
-                {
-                    isMatch = RobotsTxt.IsMatch(
-                        $"^{path}",
-                        pathWithOptionalQuery,
-                        matchTimeout);
-                }
-            }
 
-            if (isMatch)
-            {
-                if (isAllowed)
+                var escaped = EscapePath(path);
+
+                bool isMatch;
+                if (isSuffixMatch)
                 {
-                    effectedAllows.Add(path);
+                    // Match the suffix: append a single '$' to the escaped pattern.
+                    isMatch = RobotsTxt.IsMatch($"{escaped}$", pathWithOptionalQuery, matchTimeout);
                 }
                 else
                 {
-                    effectedDisallows.Add(path);
+                    if (isEndsWithSlash)
+                    {
+                        // For folder directives, the path must start with the folder pattern.
+                        // Preserve the original case-sensitive behavior by using the current
+                        // culture comparison (which matches the repository's tests).
+                        isMatch = pathWithOptionalQuery.StartsWith(path, System.StringComparison.CurrentCulture);
+                    }
+                    else
+                    {
+                        isMatch = RobotsTxt.IsMatch($"^{escaped}", pathWithOptionalQuery, matchTimeout);
+                    }
                 }
-            }
+
+                if (isMatch)
+                {
+                    // Store the escaped pattern so GetEffectedPath can unescape it when
+                    // determining the most specific match.
+                    if (isAllowed)
+                    {
+                        effectedAllows.Add(escaped);
+                    }
+                    else
+                    {
+                        effectedDisallows.Add(escaped);
+                    }
+                }
         }
 
         var effectedAllow = GetEffectedPath(effectedAllows);
@@ -174,13 +186,13 @@ public sealed class RuleGroup(string userAgent)
 
     private static string EscapePath(string path)
     {
-        // Make the period a literal. This must be done before replacing the wild card below to
-        // prevent the substituted period from getting replaced.
-        path = path.Replace(".", "\\.");
-
-        // '*' (wild card) refers to any character. Prefix it with a period to use in pattern matching.
-        path = path.Replace("*", ".*");
-
+        // Replace wildcard '*' with a placeholder, escape the remainder using Regex.Escape,
+        // then restore the wildcard as '.*'. This ensures other regex metacharacters such as
+        // '?', '+', '(', ')', '[', ']', '{', '}', '|', '^', '$' are escaped.
+        const string WildcardPlaceholder = "\uE000";
+        path = path.Replace("*", WildcardPlaceholder);
+        path = Regex.Escape(path);
+        path = path.Replace(WildcardPlaceholder, ".*");
         return path;
     }
 

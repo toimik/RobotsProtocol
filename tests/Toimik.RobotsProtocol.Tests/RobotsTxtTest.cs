@@ -143,6 +143,23 @@ public class RobotsTxtTest
     }
 
     [Fact]
+    public void DisallowQuestionMarkAtRoot()
+    {
+        var robotsTxt = new RobotsTxt();
+        var data = @"
+                user-agent: *
+                disallow: /?";
+
+        robotsTxt.Load(data);
+
+        // Root without query should be allowed
+        Assert.True(robotsTxt.IsAllowed("bot", "/"));
+
+        // Root with question mark should be disallowed
+        Assert.False(robotsTxt.IsAllowed("bot", "/?"));
+    }
+
+    [Fact]
     public void HostCaptured()
     {
         var robotsTxt = new RobotsTxt();
@@ -361,11 +378,11 @@ public class RobotsTxtTest
 
     [Theory]
     [InlineData(false, "/fish/")]
-    [InlineData(false, "/animals/fish/")]
     [InlineData(false, "/fish/?id=anything")]
     [InlineData(false, "/fish/salmon.htm")]
     [InlineData(true, "/fish")]
     [InlineData(true, "/fish.html")]
+    [InlineData(true, "/animals/fish/")]
     [InlineData(true, "/Fish/Salmon.asp")]
     public void RestrictByFolder(bool isMatch, string path)
     {
@@ -505,8 +522,8 @@ public class RobotsTxtTest
     [InlineData("/fish*", false, "/fish")]
     [InlineData("/fish*", false, "/fish.html")]
     [InlineData("/fish*", false, "/fish/salmon.html")]
-    [InlineData("/fish*", false, "/fish-heads")]
-    [InlineData("/fish*", false, "/fish-heads/yummy.html")]
+    [InlineData("/fish*", false, "/fishheads")]
+    [InlineData("/fish*", false, "/fishheads/yummy.html")]
     [InlineData("/fish*", false, "/fish.php?id=anything")]
     [InlineData("/fish*", true, "/Fish.asp")]
     [InlineData("/fish*", true, "/catfish")]

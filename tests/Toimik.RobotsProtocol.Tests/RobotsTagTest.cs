@@ -243,4 +243,64 @@ public class RobotsTagTest
 
         return actualErrorCount;
     }
+
+    [Fact]
+    public void DoGetTags_UnionWithoutComparer_ProducesDuplicates()
+    {
+        var robotsTag = new RobotsTag();
+
+        // Create TagComparer instance via reflection
+        var comparerType = typeof(RobotsTag).GetNestedType("TagComparer", System.Reflection.BindingFlags.NonPublic);
+        var comparer = (IEqualityComparer<Tag>)Activator.CreateInstance(comparerType!);
+
+        // Two separate sets that contain logically equal Tag instances
+        var set1 = new HashSet<Tag>(comparer) { new Tag("all", userAgent: "bot") };
+        var set2 = new HashSet<Tag>(comparer) { new Tag("all", userAgent: "bot") };
+
+        var directiveToTags = new Dictionary<string, ISet<Tag>>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "a", set1 },
+            { "b", set2 },
+        };
+
+        var userAgentToDirectiveToTags = new Dictionary<string, IDictionary<string, ISet<Tag>>>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "bot", directiveToTags },
+        };
+
+        // Inject the prepared internal state
+        var field = typeof(RobotsTag).GetField("userAgentToDirectiveToTags", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        field!.SetValue(robotsTag, userAgentToDirectiveToTags);
+
+        // Expect deduplication to occur across the union -> 1, but current buggy implementation returns 2
+        Assert.Equal(1, robotsTag.GetTagCount("bot"));
+    }
+
+    // New test added to ensure duplicates are ignored even when directive == null
+    [Fact]
+    public void GetTags_IgnoresDuplicatesWhenDirectiveIsNull()
+    {
+        const string UserAgent = "bot";
+        var robotsTag = new RobotsTag();
+        var data = new List<string>
+        {
+            "all, max-snippet: 100",
+            $"{UserAgent}: all, MAX-SNIPPET: 100, MAX-SNIPPET: 100",
+        };
+
+        robotsTag.Load(data);
+
+        // When directive is null, GetTagCount should return unique tags across directives
+        Assert.Equal(2, robotsTag.GetTagCount(RobotsTag.UserAgentForCatchAll));
+        Assert.Equal(2, robotsTag.GetTagCount(UserAgent));
+
+        var allTags = robotsTag.GetTags(UserAgent);
+        var list = new List<Tag>();
+        while (allTags.MoveNext())
+        {
+            list.Add(allTags.Current);
+        }
+
+        Assert.Equal(2, list.Count);
+    }
 }
